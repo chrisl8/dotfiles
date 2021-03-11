@@ -35,12 +35,6 @@ if ! (command -v zsh >/dev/null) || ! (command -v tmux >/dev/null) || ! (command
   sudo apt install -y zsh tmux keychain wget
 fi
 
-if [[ "${SHELL}" != "$(which zsh)" ]]; then
-  LOGOUT=true
-  printf "\n${PURPLE}Setting ZSH as your default shell.${NC}\n"
-  chsh -s "$(which zsh)"
-fi
-
 if [[ -d /mnt/c/Users/chris/Dropbox ]] && ! [[ -L "${HOME}/Dropbox" ]]; then
   cd || exit
   ln -s /mnt/c/Users/chris/Dropbox .
@@ -52,22 +46,6 @@ if ! [[ -d "${HOME}"/.ssh ]]; then
   mkdir .ssh
   chmod go-rwx .ssh
   printf "\n${RED}Add your SSH keys to ~/.ssh !!!${NC}\n"
-fi
-
-cd || exit
-if [[ -f .zshrc ]]; then
-  rm .zshrc
-fi
-if ! [[ -L .zshrc ]]; then
-  ln -s dotfiles/.zshrc .
-fi
-
-cd || exit
-if [[ -f .zshenv ]]; then
-  rm .zshenv
-fi
-if ! [[ -L .zshenv ]]; then
-  ln -s dotfiles/.zshenv .
 fi
 
 cd || exit
@@ -102,6 +80,29 @@ if [[ -d "${HOME}"/.oh-my-zsh ]] && ! [[ -d "${HOME}"/.oh-my-zsh/custom/themes/p
   LOGOUT=true
   printf "\n${PURPLE}Installing Powerlevel10k${NC}\n"
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
+fi
+
+cd || exit
+if [[ -f .zshrc ]]; then
+  rm .zshrc
+fi
+if ! [[ -L .zshrc ]]; then
+  ln -s dotfiles/.zshrc .
+fi
+
+cd || exit
+if [[ -f .zshenv ]]; then
+  rm .zshenv
+fi
+if ! [[ -L .zshenv ]]; then
+  ln -s dotfiles/.zshenv .
+fi
+
+if ! (grep "${USER}" /etc/passwd | grep zsh >/dev/null); then
+  LOGOUT=true
+  printf "\n${PURPLE}Setting ZSH as your default shell.${NC}\n"
+  # Actually I think Oh My ZSH does this itself anyway, but it doesnt' hurt.
+  chsh -s "$(which zsh)"
 fi
 
 if [[ "${LOGOUT}" == "true" ]]; then
