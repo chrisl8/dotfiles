@@ -32,6 +32,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 export DEFAULT_USER="${USER}"
 
+# https://github.com/romkatv/powerlevel10k#extra-or-missing-spaces-in-prompt-compared-to-powerlevel9k
+ZLE_RPROMPT_INDENT=0
+
 # Use http://nerdfonts.com/?set=nf-custom-#cheat-sheet to find icon codes to use
 
 POWERLEVEL10K_RIGHT_PROMPT_ELEMENTS=(vi_mode status root_indicator background_jobs history time)
