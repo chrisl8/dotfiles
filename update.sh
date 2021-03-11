@@ -98,6 +98,14 @@ if ! [[ -L .zshenv ]]; then
   ln -s dotfiles/.zshenv .
 fi
 
+cd || exit
+if [[ -f .p10k.zsh ]]; then
+  rm .p10k.zsh
+fi
+if ! [[ -L .p10k.zsh ]]; then
+  ln -s dotfiles/.p10k.zsh .
+fi
+
 if ! (grep "${USER}" /etc/passwd | grep zsh >/dev/null); then
   LOGOUT=true
   printf "\n${PURPLE}Setting ZSH as your default shell.${NC}\n"
