@@ -19,7 +19,7 @@ SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 RED='\033[0;31m'
 PURPLE='\033[0;35m'
 #LIGHT_PURPLE='\033[1;35m'
-#YELLOW='\033[1;33m'
+YELLOW='\033[1;33m'
 #LIGHTCYAN='\033[1;36m'
 #LIGHTBLUE='\033[1;34m'
 #LIGHTPURPLE='\033[1;35m'
@@ -52,19 +52,6 @@ if ! [[ -d "${HOME}"/.ssh ]]; then
   mkdir .ssh
   chmod go-rwx .ssh
   printf "\n${RED}Add your SSH keys to ~/.ssh !!!${NC}\n"
-fi
-
-cd || exit
-if ! [[ -d "${HOME}"/.oh-my-zsh ]]; then
-  LOGOUT=true
-  printf "\n${PURPLE}Installing Oh My ZSH!${NC}\n"
-  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
-
-if ! [[ -d "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
-  LOGOUT=true
-  printf "\n${PURPLE}Installing Powerlevel10k${NC}\n"
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
 fi
 
 cd || exit
@@ -102,8 +89,27 @@ if ! [[ -L .tmux.conf.local ]]; then
   ln -s dotfiles/.tmux.conf.local .
 fi
 
-if [[ "${LOGOUT}" == "true" ]]; then
-  printf "\n${RED}Your must log out and back in for settings to take effect${NC}\n"
+cd || exit
+if ! [[ -d "${HOME}"/.oh-my-zsh ]]; then
+  LOGOUT=true
+  printf "\n${PURPLE}Installing Oh My ZSH!${NC}\n"
+  printf "\n${YELLOW}After this is done, it leaves you at a prompt,${NC}\n"
+  printf "\n${YELLOW}type exit to leave that ZSH prompt and finish this setup!${NC}\n"
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
+
+if ! [[ -d "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
+  LOGOUT=true
+  printf "\n${PURPLE}Installing Powerlevel10k${NC}\n"
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
+fi
+
+if [[ "${LOGOUT}" == "true" ]]; then
+  printf "\n${RED}Your should probably reboot, or at least log out and back in for settings to take effect...${NC}\n"
+  printf "\n${YELLOW}Don't forget to set up your Terminal fonts!${NC}\n"
+  printf "\n${YELLOW}See README.md for instructions.${NC}\n"
+fi
+
+cd || exit
 
 # TODO: Set up .zshenv to use pi32 or pi64 bin folders for Pi
