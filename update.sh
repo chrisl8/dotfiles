@@ -31,8 +31,8 @@ git pull
 
 LOGOUT=false
 
-if ! (command -v zsh >/dev/null) || ! (command -v tmux >/dev/null) || ! (command -v keychain >/dev/null); then
-  sudo apt install -y zsh tmux keychain
+if ! (command -v zsh >/dev/null) || ! (command -v tmux >/dev/null) || ! (command -v keychain >/dev/null) || ! (command -v wget >/dev/null); then
+  sudo apt install -y zsh tmux keychain wget
 fi
 
 if [[ "${SHELL}" != "$(which zsh)" ]]; then
@@ -95,7 +95,7 @@ if ! [[ -d "${HOME}"/.oh-my-zsh ]]; then
   printf "\n${PURPLE}Installing Oh My ZSH!${NC}\n"
   printf "\n${YELLOW}After this is done, it leaves you at a prompt,${NC}\n"
   printf "\n${YELLOW}type exit to leave that ZSH prompt and finish this setup!${NC}\n"
-  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 fi
 
 if [[ -d "${HOME}"/.oh-my-zsh ]] && ! [[ -d "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
