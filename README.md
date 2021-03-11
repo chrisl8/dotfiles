@@ -1,7 +1,7 @@
 # dotfiles
 My Linux configuration settings and setup files.
 
-## To install
+## To Install
 
 Because this is a Private repository you need to authenticate yourself.
 This repository has a Deploy Key on it and the private key should be in:
@@ -16,7 +16,14 @@ cd dotfiles
 ./update.sh
 ```
 
-TODO: Script the contents of my Linux setup doc.
+## To Update
+
+You can run the `update.sh` in dotfiles as often as you like,
+but there is a script to update everything:
+
+```shell
+updateAllTheTHings.sh
+```
 
 # Fonts
 
@@ -40,4 +47,3 @@ TODO: Add Instructions.
 # TMUX
 
 Run `gomux` when you start yoru terminal and it will open a new named session or attach to it if it already exists.
-

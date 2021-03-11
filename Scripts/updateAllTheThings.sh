@@ -25,11 +25,22 @@ done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 # echo "${SCRIPT_DIR}" # For debugging
 
+printf "\n${PURPLE}Updating dotfiles${NC}\n"
+cd ~/dotfiles || exit
+git pull
+cd || exit
+
+env ZSH="$ZSH" sh "$ZSH"/tools/upgrade.sh
+
+printf "\n${PURPLE}Updating powerlevel10k${NC}\n"
 git -C "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k pull
+
+printf "\n${PURPLE}Updating Oh My TMUX!${NC}\n"
 cd ~/.tmux || exit
 git pull
 cd || exit
-env ZSH="$ZSH" sh "$ZSH"/tools/upgrade.sh
+
+printf "\n${PURPLE}Ubuntu Updates${NC}\n"
 sudo apt update
 sudo apt -y upgrade
 sudo apt -y autoremove
