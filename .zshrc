@@ -37,34 +37,26 @@ ZLE_RPROMPT_INDENT=0
 
 # Use http://nerdfonts.com/?set=nf-custom-#cheat-sheet to find icon codes to use
 
-POWERLEVEL10K_RIGHT_PROMPT_ELEMENTS=(vi_mode status root_indicator background_jobs history time)
-POWERLEVEL10K_SHORTEN_DIR_LENGTH=1
-POWERLEVEL10K_SHORTEN_STRATEGY=truncate_folders
+if [[ ${PUTTY_SESSION} == "True" ]];then
+# TODO: This won't actually accomplish anything, but it is here to transfor to a new .p10k.zsh file for putty someday, if I ever use it.
 
-if [[ ${PUTTY_SESSION} == "False" ]];then
-POWERLEVEL10K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
-
-POWERLEVEL10K_MODE='nerdfont-complete'
-POWERLEVEL10K_VI_INSERT_MODE_STRING=''
-POWERLEVEL10K_VI_COMMAND_MODE_STRING='%F{green3}\uE62B'
-else
 # For some reason Nerd Font glyphs in Windows via puTTY don't all work.
 # So I found some that looked similar but worked and substituted.
 # Someday maybe we'll sort out the reason, and/or add more substitutions.
 # In theory we could even use 'nerdfont-complete' if we found enough.
-POWERLEVEL10K_LEFT_PROMPT_ELEMENTS=(dir vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 
 # run 'get_icon_names' from the command prompt to see all icon names,
 # and what they are set to now!
-POWERLEVEL10K_VCS_UNSTAGED_ICON='\uf704'
-POWERLEVEL10K_VCS_STASH_ICON='\uf48d'
-POWERLEVEL10K_VCS_STAGED_ICON='\uf916'
-POWERLEVEL10K_HOME_ICON='\uf46d'
-POWERLEVEL10K_CARRIAGE_RETURN_ICON='\uf810'
-POWERLEVEL10K_OK_ICON='\uf62b'
-#POWERLEVEL10K_LINUX_ICON='\ue712'
-POWERLEVEL10K_VI_INSERT_MODE_STRING=''
-POWERLEVEL10K_VI_COMMAND_MODE_STRING='%F{green3}\uE62B'
+POWERLEVEL9K_VCS_UNSTAGED_ICON='\uf704'
+POWERLEVEL9K_VCS_STASH_ICON='\uf48d'
+POWERLEVEL9K_VCS_STAGED_ICON='\uf916'
+POWERLEVEL9K_HOME_ICON='\uf46d'
+POWERLEVEL9K_CARRIAGE_RETURN_ICON='\uf810'
+POWERLEVEL9K_OK_ICON='\uf62b'
+#POWERLEVEL9K_LINUX_ICON='\ue712'
+POWERLEVEL9K_VI_INSERT_MODE_STRING=''
+POWERLEVEL9K_VI_COMMAND_MODE_STRING='%F{green3}\uE62B'
 fi
 
 # https://www.johnhawthorn.com/2012/09/vi-escape-delays/
