@@ -5,12 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# TODO: Most of the POWERLEVEL10K lines here are now wiped out by .p10k.zsh so remove them.
-
-# TODO: Remove other ancient crap or unneded things.0
-
-# TODO: Remove old comments that we don't need.
-
 if [[ -z ${PUTTY_SESSION} ]];then
     if [[ ${TERM} == "xterm" ]];then
         export PUTTY_SESSION=True
