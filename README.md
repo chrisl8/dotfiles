@@ -5,24 +5,19 @@ My Linux configuration settings and setup files.
 
 Because this is a Private repository you need to authenticate yourself.
 This repository has a Deploy Key on it and the private key should be in:
-`/home/chrisl8/Dropbox/allLinux/dotfilesDeployKey`
+`/home/chrisl8/Dropbox/allLinux/dotfilesDeployKey/id_rsa`
+
+To add a key to your install:  
+`mkdir .ssh;vi .ssh/id_rsa;chmod -R go-rw .ssh`
 
 Use that key for any system that you don't want to actually give your normal keys to.
 
 ```shell
+if ! (command -v git > /dev/null);then sudo apt -y install git;fi
 cd
 git clone git@github.com:chrisl8/dotfiles.git
 cd dotfiles
 ./update.sh
-```
-
-## To Update
-
-You can run the `update.sh` in dotfiles as often as you like,
-but there is a script to update everything:
-
-```shell
-updateAllTheTHings.sh
 ```
 
 # Fonts
@@ -47,3 +42,12 @@ TODO: Add Instructions.
 # TMUX
 
 Run `gomux` when you start yoru terminal and it will open a new named session or attach to it if it already exists.
+
+## To Update
+
+You can run the `update.sh` in dotfiles as often as you like,
+but there is a script to update everything:
+
+```shell
+updateAllTheTHings.sh
+```
