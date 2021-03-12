@@ -16,6 +16,7 @@ set -e
 
 # Grab and save the path to this script
 # http://stackoverflow.com/a/246128
+# https://stackoverflow.com/questions/9901210/bash-source0-equivalent-in-zsh
 SOURCE="${(%):-%x}"
 while [[ -L "$SOURCE" ]]; do # resolve $SOURCE until the file is no longer a symlink
   DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
@@ -44,6 +45,10 @@ printf "\n${PURPLE}Ubuntu Updates${NC}\n"
 sudo apt update
 sudo apt -y upgrade
 sudo apt -y autoremove
+
+if [[ -d /mnt/c/Users ]]; then
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/
+fi
 
 if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
