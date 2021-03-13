@@ -71,8 +71,8 @@ cd || exit
 if ! [[ -d "${HOME}"/.oh-my-zsh ]]; then
   LOGOUT=true
   printf "\n${PURPLE}Installing Oh My ZSH!${NC}\n"
-  printf "\n${YELLOW}After this is done, it leaves you at a prompt,${NC}\n"
-  printf "\n${YELLOW}type exit to leave that ZSH prompt and finish this setup!${NC}\n"
+  printf "\n${YELLOW}After this is done, it MAY leave you at a strange empty ~ prompt.${NC}\n"
+  printf "\n${YELLOW}If so, type exit to leave that ZSH prompt and finish this setup!${NC}\n"
   sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 fi
 
