@@ -24,8 +24,9 @@ UNISON_ARGUMENTS+=(-ignore "Name .oh-my-zsh") # This is entirely pulled from git
 UNISON_ARGUMENTS+=(-ignore "Name .tmux")      # This is entirely pulled from git
 
 if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux/
+
   printf "\n${YELLOW}Backing up to Dropbox.${NC}\n"
   unison "${UNISON_ARGUMENTS[@]}"
 
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux/
 fi
