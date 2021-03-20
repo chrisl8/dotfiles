@@ -1,11 +1,11 @@
 #!/bin/bash
-REMOTE_IP=192.168.1.53
+REMOTE_IP=TwoFlower
 
-function copyDotFiles() {
+function copyArlobotDotFiles() {
   unison "${HOME}"/Dev/ArlobotDotfiles/twoflower ssh://${REMOTE_IP}/"${HOME}" -path .arlobot -auto
 }
 
-copyDotFiles
+copyArlobotDotFiles
 
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=("${HOME}")
@@ -23,4 +23,4 @@ if unison "${UNISON_ARGUMENTS[@]}"; then
   unison "${UNISON_ARGUMENTS[@]}" -batch -repeat watch
 fi
 
-copyDotFiles
+copyArlobotDotFiles
