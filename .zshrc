@@ -27,7 +27,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 export DEFAULT_USER="${USER}"
 
 # https://github.com/romkatv/powerlevel10k#extra-or-missing-spaces-in-prompt-compared-to-powerlevel9k
-ZLE_RPROMPT_INDENT=0
+# This must be 1 or more or else vertical split tmux windows go insane.
+ZLE_RPROMPT_INDENT=1
 
 # Use http://nerdfonts.com/?set=nf-custom-#cheat-sheet to find icon codes to use
 
