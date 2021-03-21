@@ -4,7 +4,7 @@
 #BLUE='\033[0;34m'
 #GREEN='\033[0;32m'
 #RED='\033[0;31m'
-#PURPLE='\033[0;35m'
+PURPLE='\033[0;35m'
 #LIGHT_PURPLE='\033[1;35m'
 YELLOW='\033[1;33m'
 #LIGHTCYAN='\033[1;36m'
@@ -49,6 +49,8 @@ sudo apt -y autoremove
 if [[ -d /mnt/c/Users ]]; then
   cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/
 fi
+
+cp /etc/sudoers.d/"${USER}" "${HOME}"/dotfiles/sudoers.d
 
 if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
