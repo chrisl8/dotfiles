@@ -121,4 +121,29 @@ fi
 
 cd || exit
 
+cd || exit
+if [[ -f .vimrc ]]; then
+  rm .vimrc
+fi
+if ! [[ -L .vimrc ]]; then
+  ln -s dotfiles/.vimrc .
+fi
+
+printf "\n${PURPLE}VIM Setup${NC}\n"
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+if ! [[ -d .vim/plugged ]]; then
+  mkdir -p ~/.vim/plugged
+fi
+
+if ! [[ -d .vim/plugged/darcula ]]; then
+  printf "\n${YELLOW}Ignore the error about missing color schemes and press Enter.${NC}\n"
+fi
+
+vim -c ':PlugInstall | quit | quit'
+vim -c ':PlugClean | quit | quit'
+vim -c ':PlugUpdate | quit | quit'
+
+cd || exit
+
 # TODO: Set up .zshenv to use pi32 or pi64 bin folders for Pi

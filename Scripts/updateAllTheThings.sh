@@ -41,6 +41,11 @@ cd ~/.tmux || exit
 git pull
 cd || exit
 
+printf "\n${PURPLE}VIM Updates${NC}\n"
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+vim -c ':PlugClean | quit | quit'
+vim -c ':PlugUpdate | quit | quit'
+
 printf "\n${PURPLE}Ubuntu Updates${NC}\n"
 sudo apt update
 sudo apt -y upgrade
