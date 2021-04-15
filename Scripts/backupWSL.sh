@@ -1,6 +1,27 @@
 #!/bin/bash
 # shellcheck disable=SC2059
 
+set -e
+
+# Grab and save the path to this script
+# http://stackoverflow.com/a/246128
+SOURCE="${BASH_SOURCE[0]}"
+while [[ -L "$SOURCE" ]]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ ${SOURCE} != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+# echo "${SCRIPT_DIR}" # For debugging
+
+if [[ -d /mnt/c/Users ]]; then
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/
+fi
+
+if [[ -e /etc/sudoers.d/"${USER}" ]]; then
+  cp /etc/sudoers.d/"${USER}" "${SCRIPT_DIR}"/../sudoers.d/
+fi
+
 UNISON_ARGUMENTS=()
 
 UNISON_ARGUMENTS+=("${HOME}")
