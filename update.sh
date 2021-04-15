@@ -14,7 +14,7 @@ done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 # echo "${SCRIPT_DIR}" # For debugging
 
-#BLUE='\033[0;34m'
+BLUE='\033[0;34m'
 #GREEN='\033[0;32m'
 RED='\033[0;31m'
 PURPLE='\033[0;35m'
@@ -145,5 +145,12 @@ vim -c ':PlugClean | quit | quit'
 vim -c ':PlugUpdate | quit | quit'
 
 cd || exit
+
+printf "\n${PURPLE}GIT Settings${NC}\n"
+git config --global core.autocrlf input
+
+printf "\n${YELLOW}NOTE: This script installs, but mayor may not update.${NC}\n"
+printf "\n${BLUE}You can run this again and again, in case there is something new to install,${NC}\n"
+printf "\n${BLUE}but consider running updateAllTheTHings.sh to update things too!${NC}\n"
 
 # TODO: Set up .zshenv to use pi32 or pi64 bin folders for Pi
