@@ -154,7 +154,7 @@ source ~/.keychain/`uname -n`-sh
 export EDITOR=vim
 export VISUAL=vim
 
-NVM_SYMLINK_CURRENT=true
+export NVM_SYMLINK_CURRENT=true
 # This adds $HOME/.nvm/current/bin which links to the current version.
 # Now you can add it to your path in .profile
 # AND use it in programs like IntelliJ
