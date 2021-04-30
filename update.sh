@@ -149,7 +149,27 @@ cd || exit
 printf "\n${PURPLE}GIT Settings${NC}\n"
 git config --global core.autocrlf input
 
-printf "\n${YELLOW}NOTE: This script installs, but mayor may not update.${NC}\n"
+printf "\n${PURPLE}Node.js via nvm${NC}\n"
+# Copied from arlobot's setup-noetic.sh
+printf "${BLUE}[Installing/Updating Node Version Manager]${NC}\n"
+if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+fi
+
+export NVM_DIR="${HOME}/.nvm"
+export NVM_SYMLINK_CURRENT=true
+# shellcheck source=/home/chrisl8/.nvm/nvm.sh
+[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
+  printf "\n${YELLOW}[Setting the NVM current environment in your .bashrc file]${NC}\n"
+  sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.bashrc"
+  # NOTE: This is already set it our standard .zshrc file, so no need to set it there.
+fi
+
+nvm install --lts
+
+printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
 printf "\n${BLUE}You can run this again and again, in case there is something new to install,${NC}\n"
 printf "\n${BLUE}but consider running updateAllTheTHings.sh to update things too!${NC}\n"
 
