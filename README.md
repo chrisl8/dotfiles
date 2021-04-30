@@ -1,6 +1,11 @@
 # dotfiles
 My Linux configuration settings and setup files.
 
+## Platform
+
+This is intended to work on both the latest LTS of Ubuntu **and** WSL2.
+It should also work on Raspbian as well Ubuntu on Raspberry Pi.
+
 ## To Install
 
 Because this is a Private repository, you need to authenticate yourself.
