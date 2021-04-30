@@ -51,6 +51,14 @@ sudo apt update
 sudo apt -y upgrade
 sudo apt -y autoremove
 
+printf "\n${PURPLE}Node.js Updates${NC}\n"
+export NVM_DIR="${HOME}/.nvm"
+export NVM_SYMLINK_CURRENT=true
+# shellcheck source=/home/chrisl8/.nvm/nvm.sh
+[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+nvm install --lts
+
 if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
 fi
