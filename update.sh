@@ -31,9 +31,7 @@ git pull
 
 LOGOUT=false
 
-if ! (command -v zsh >/dev/null) || ! (command -v tmux >/dev/null) || ! (command -v keychain >/dev/null) || ! (command -v wget >/dev/null); then
-  sudo apt install -y zsh tmux keychain wget
-fi
+sudo apt install -y zsh tmux keychain wget curl vim
 
 if [[ -d /mnt/c/Users/chris/Dropbox ]] && ! [[ -L "${HOME}/Dropbox" ]]; then
   cd || exit
@@ -127,6 +125,13 @@ if [[ -f .vimrc ]]; then
 fi
 if ! [[ -L .vimrc ]]; then
   ln -s dotfiles/.vimrc .
+fi
+
+cd || exit
+if ! [[ -e .local/share/fonts ]]; then
+  cd ~/.local/share
+  ln -s ~/dotfiles/fonts .
+  cd || exit
 fi
 
 printf "\n${PURPLE}VIM Setup${NC}\n"
