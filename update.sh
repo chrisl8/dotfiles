@@ -128,10 +128,12 @@ if ! [[ -L .vimrc ]]; then
 fi
 
 cd || exit
-if ! [[ -e .local/share/fonts ]]; then
-  cd ~/.local/share
-  ln -s ~/dotfiles/fonts .
-  cd || exit
+if [[ -e .local ]] && [[ -e .local/share ]]; then
+  if ! [[ -e .local/share/fonts ]]; then
+    cd ~/.local/share
+    ln -s ~/dotfiles/fonts .
+    cd || exit
+  fi
 fi
 
 printf "\n${PURPLE}VIM Setup${NC}\n"
