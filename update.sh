@@ -108,7 +108,7 @@ if ! (grep "${USER}" /etc/passwd | grep zsh >/dev/null); then
   LOGOUT=true
   printf "\n${PURPLE}Setting ZSH as your default shell.${NC}\n"
   # Actually I think Oh My ZSH does this itself anyway, but it doesnt' hurt.
-  chsh -s "$(which zsh)"
+  sudo chsh -s "$(which zsh)" "$(whoami)"
 fi
 
 if [[ "${LOGOUT}" == "true" ]]; then
