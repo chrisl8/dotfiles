@@ -162,12 +162,19 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export ROS_MASTER_URI=http://twoflower:11311
-#export ROS_MASTER_URI=http://localhost:11311
+if [[ "${(L)HOST}" == "twoflower" ]]; then
+  export ROS_MASTER_URI=http://localhost:11311
+else
+  export ROS_MASTER_URI=http://twoflower:11311
+fi
 export ROS_HOSTNAME=$(uname -n).local
-#export PATH=$PATH:/home/chrisl8/catkin_ws/src/ArloBot/scripts
+if [[ -d $HOME/catkin_ws/src/ArloBot/scripts ]];then
+  export PATH=$PATH:$HOME/catkin_ws/src/ArloBot/scripts
+fi
 export ROSLAUNCH_SSH_UNKNOWN=1
-#source ~/catkin_ws/devel/setup.zsh
+if [[ -d $HOME/catkin_ws/devel/setup.zsh ]];then
+  source $HOME/catkin_ws/devel/setup.zsh
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
