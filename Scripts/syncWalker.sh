@@ -1,5 +1,5 @@
 #!/bin/bash
-REMOTE_IP=dalek1
+REMOTE_IP=walker1
 
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=("${HOME}"/Dev)
