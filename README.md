@@ -30,17 +30,13 @@ cd dotfiles
 Fonts are vendored here so that I can easily set them up for the terminal of my system if needed.
 See README.md in each fonts sub-folder for source information.
 
-## Install the Font for Ubuntu
-1. Open "Files"
-2. Navigate to "Home"/dotfiles/fonts/JetBrainsMonoNerdFonts
-3. Find and double-click on `JetBrains Mono Regular Nerd Font Complete.ttf`
-4. Click "Install"
+## Ubuntu
 
-Now open your Terminal settings and set this Font.
+Open your Terminal settings and set the Font to "JetBrains Mono Regular Nerd Font".
 
 Your Powerline prompt should look amazing!
 
-# Terminal Settings
+# Other Terminal Settings
 
 I use a black background on all terminals, so the color settings assume that.
 
@@ -60,3 +56,7 @@ but there is a script to update everything:
 ```shell
 updateAllTheThings.sh
 ```
+
+# Windows Terminal
+
+TODO: Include font install instructions.
