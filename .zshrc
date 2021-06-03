@@ -162,6 +162,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# ROS
 if [[ "${(L)HOST}" == "twoflower" ]]; then
   export ROS_MASTER_URI=http://localhost:11311
 else
@@ -174,6 +175,11 @@ fi
 export ROSLAUNCH_SSH_UNKNOWN=1
 if [[ -d $HOME/catkin_ws/devel/setup.zsh ]];then
   source $HOME/catkin_ws/devel/setup.zsh
+fi
+
+# RobotAnything
+if [[ -d $HOME/RobotAnything ]];then
+  export PATH=$PATH:$HOME/RobotAnything
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
