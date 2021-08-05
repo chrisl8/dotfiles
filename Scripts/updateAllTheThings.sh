@@ -31,6 +31,7 @@ cd ~/dotfiles || exit
 git pull
 cd || exit
 
+printf "\n${PURPLE}Updating Oh My ZSH!${NC}\n"
 env ZSH="$ZSH" sh "$ZSH"/tools/upgrade.sh
 
 printf "\n${PURPLE}Updating powerlevel10k${NC}\n"
@@ -56,9 +57,14 @@ export NVM_DIR="${HOME}/.nvm"
 export NVM_SYMLINK_CURRENT=true
 # shellcheck source=/home/chrisl8/.nvm/nvm.sh
 [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
-
 nvm install --lts
+
+"${SCRIPT_DIR}"/makeIndexableCopyOfObsidianMdFilesForDropbox.sh
 
 if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
+fi
+
+if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
+  printf "\n${YELLOW}Consider comparing your Windows Terminal verison and updating it.${NC}\n"
 fi
