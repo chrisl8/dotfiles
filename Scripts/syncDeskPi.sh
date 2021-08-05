@@ -1,5 +1,5 @@
 #!/bin/bash
-REMOTE_IP=desk
+REMOTE_IP=192.168.55.188
 
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=("${HOME}"/Dev)
@@ -11,9 +11,6 @@ UNISON_ARGUMENTS+=(-ignore "Name node/node_modules")
 UNISON_ARGUMENTS+=(-ignore "Name website/node_modules")
 UNISON_ARGUMENTS+=(-ignore "Name website/build")
 UNISON_ARGUMENTS+=(-auto)
-# Copying files to/from WSL2 screwed up perms.
-# You can remove this and fix them, but it will take ages.
-UNISON_ARGUMENTS+=(-perms=0)
 
 if unison "${UNISON_ARGUMENTS[@]}"; then
   # pigpio cannot install on a non-Pi box, but we need it for IntelliJ to code complete:
