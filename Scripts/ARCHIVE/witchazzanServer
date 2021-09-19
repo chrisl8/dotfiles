@@ -1,0 +1,10 @@
+#!/bin/bash
+cd ~/Dev/witchazzan-server
+rm config/save.edn
+rm config/log
+#rm config/config.edn
+git fetch upstream
+git merge upstream/master
+git push
+echo "Use Ctrl+d to exit."
+./lein repl
