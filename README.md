@@ -10,7 +10,7 @@ It should also work on Raspbian as well Ubuntu on Raspberry Pi.
 
 Because this is a Private repository, you need to authenticate yourself.
 This repository has a Deploy Key on it, and the private key should be in:
-`/home/chrisl8/Dropbox/allLinux/dotfilesDeployKey/id_rsa`
+`/home/chrisl8/Dropbox/Documents/keys/dotfilesDeployKey/id_rsa`
 
 To add a key to your new system:  
 `mkdir .ssh;vi .ssh/id_rsa;chmod -R go-rw .ssh`
