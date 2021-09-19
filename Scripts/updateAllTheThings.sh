@@ -61,10 +61,16 @@ nvm install --lts
 
 "${SCRIPT_DIR}"/makeIndexableCopyOfObsidianMdFilesForDropbox.sh
 
+QUICKEN_FOLDER_ROOT=/mnt/c/Users/chris/Documents
+if [[ -d ${QUICKEN_FOLDER_ROOT}/Quicken && -d /home/chrisl8/Dropbox/Quicken ]]; then
+  printf "\n${PURPLE}Backing up Quicken files to Dropbox${NC}\n"
+  unison ${QUICKEN_FOLDER_ROOT} /home/chrisl8/Dropbox -path Quicken -force ${QUICKEN_FOLDER_ROOT} -auto -batch
+fi
+
 if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
 fi
 
 if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
-  printf "\n${YELLOW}Consider comparing your Windows Terminal verison and updating it.${NC}\n"
+  printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
 fi
