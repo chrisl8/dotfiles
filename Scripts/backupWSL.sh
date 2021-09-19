@@ -54,6 +54,7 @@ UNISON_ARGUMENTS+=(-ignore "Name Dev/*/.git")
 UNISON_ARGUMENTS+=(-ignore "Name catkin_ws/*/.git")
 UNISON_ARGUMENTS+=(-ignore "Name .oh-my-zsh") # This is entirely pulled from git
 UNISON_ARGUMENTS+=(-ignore "Name .tmux")      # This is entirely pulled from git
+UNISON_ARGUMENTS+=(-ignore "Name .opam")
 UNISON_ARGUMENTS+=(-batch)                    # Causes it to propagate changes without stopping to ask first.
 
 if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
