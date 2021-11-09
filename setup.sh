@@ -39,6 +39,12 @@ if [[ -d /mnt/c/Users/chris/Dropbox ]] && ! [[ -L "${HOME}/Dropbox" ]]; then
   echo yes
 fi
 
+if [[ -d /mnt/d/Dropbox ]] && ! [[ -L "${HOME}/Dropbox" ]]; then
+  cd || exit
+  ln -s /mnt/d/Dropbox .
+  echo yes
+fi
+
 if ! [[ -d "${HOME}"/.ssh ]]; then
   cd || exit
   mkdir .ssh

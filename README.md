@@ -22,7 +22,7 @@ if ! (command -v git > /dev/null);then sudo apt -y install git;fi
 cd
 git clone git@github.com:chrisl8/dotfiles.git
 cd dotfiles
-./update.sh
+./setup.sh
 ```
 
 # Fonts
