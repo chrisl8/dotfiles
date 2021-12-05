@@ -181,6 +181,7 @@ if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
 fi
 
 nvm install --lts
+nvm alias default node
 
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
 printf "\n${BLUE}You can run this again and again, in case there is something new to install,${NC}\n"
