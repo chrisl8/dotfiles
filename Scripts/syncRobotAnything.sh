@@ -1,5 +1,21 @@
 #!/bin/bash
-REMOTE_IP=DalekOne
+REMOTE_IP=""
+
+while test $# -gt 0; do
+  REMOTE_IP=$1
+  shift
+done
+
+if [[ "${REMOTE_IP}" == "" ]]; then
+  echo "You must provide a hostname."
+  exit
+fi
+
+function copyDotFiles() {
+  unison "${HOME}"/Dev/RobotAnythingDotFiles/"${REMOTE_IP}" ssh://ubuntu@"${REMOTE_IP}"//home/ubuntu -path .robotAnything -auto
+}
+
+copyDotFiles
 
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=("${HOME}"/Dev)
@@ -18,3 +34,5 @@ if unison "${UNISON_ARGUMENTS[@]}"; then
 
   unison "${UNISON_ARGUMENTS[@]}" -batch -repeat watch
 fi
+
+copyDotFiles

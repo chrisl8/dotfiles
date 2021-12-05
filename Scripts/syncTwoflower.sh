@@ -1,8 +1,8 @@
 #!/bin/bash
-REMOTE_IP=twoflower
+REMOTE_IP=metatron
 
 function copyArlobotDotFiles() {
-  unison "${HOME}"/Dev/ArlobotDotfiles/twoflower ssh://${REMOTE_IP}/"${HOME}" -path .arlobot -auto
+  unison "${HOME}"/Dev/ArlobotDotfiles/metatron ssh://${REMOTE_IP}/"${HOME}" -path .arlobot -auto
 }
 
 copyArlobotDotFiles

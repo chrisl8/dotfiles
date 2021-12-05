@@ -58,6 +58,7 @@ export NVM_SYMLINK_CURRENT=true
 # shellcheck source=/home/chrisl8/.nvm/nvm.sh
 [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
 nvm install --lts
+nvm alias default node
 
 "${SCRIPT_DIR}"/makeIndexableCopyOfObsidianMdFilesForDropbox.sh
 
@@ -67,7 +68,7 @@ if [[ -d ${QUICKEN_FOLDER_ROOT}/Quicken && -d /home/chrisl8/Dropbox/Quicken ]]; 
   unison ${QUICKEN_FOLDER_ROOT} /home/chrisl8/Dropbox -path Quicken -force ${QUICKEN_FOLDER_ROOT} -auto -batch
 fi
 
-if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
+if [[ -d /mnt/d/Dropbox/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
 fi
 

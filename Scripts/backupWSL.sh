@@ -25,7 +25,7 @@ fi
 UNISON_ARGUMENTS=()
 
 UNISON_ARGUMENTS+=("${HOME}")
-UNISON_ARGUMENTS+=(/mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux/home/chrisl8)
+UNISON_ARGUMENTS+=(/mnt/d/Dropbox/BACKUPS/WSL2-Linux/home/chrisl8)
 UNISON_ARGUMENTS+=(-force "${HOME}")
 UNISON_ARGUMENTS+=(-perms 0)
 UNISON_ARGUMENTS+=(-dontchmod)
@@ -57,8 +57,8 @@ UNISON_ARGUMENTS+=(-ignore "Name .tmux")      # This is entirely pulled from git
 UNISON_ARGUMENTS+=(-ignore "Name .opam")
 UNISON_ARGUMENTS+=(-batch)                    # Causes it to propagate changes without stopping to ask first.
 
-if [[ -d /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux ]]; then
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json /mnt/c/Users/chris/Dropbox/BACKUPS/WSL2-Linux/
+if [[ -d /mnt/d/Dropbox/BACKUPS/WSL2-Linux ]]; then
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json /mnt/d/Dropbox/BACKUPS/WSL2-Linux/
 
   printf "\n${YELLOW}Backing up to Dropbox.${NC}\n"
   unison "${UNISON_ARGUMENTS[@]}"
