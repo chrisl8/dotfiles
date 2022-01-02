@@ -62,7 +62,7 @@ nvm alias default node
 
 "${SCRIPT_DIR}"/makeIndexableCopyOfObsidianMdFilesForDropbox.sh
 
-QUICKEN_FOLDER_ROOT=/mnt/c/Users/chris/Documents
+QUICKEN_FOLDER_ROOT=/mnt/d
 if [[ -d ${QUICKEN_FOLDER_ROOT}/Quicken && -d /home/chrisl8/Dropbox/Quicken ]]; then
   printf "\n${PURPLE}Backing up Quicken files to Dropbox${NC}\n"
   unison ${QUICKEN_FOLDER_ROOT} /home/chrisl8/Dropbox -path Quicken -force ${QUICKEN_FOLDER_ROOT} -auto -batch
