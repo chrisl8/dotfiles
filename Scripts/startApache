@@ -1,2 +1,7 @@
-sudo service apache2 restart
-sudo service mariadb restart
+#!/bin/bash
+if (command -v apache2); then
+  sudo service apache2 restart
+fi
+if (command -v mariadb); then
+  sudo service mariadb restart
+fi
