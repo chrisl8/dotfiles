@@ -1,15 +1,15 @@
 #!/bin/bash
-REMOTE_IP=metatron
+REMOTE_IP=twoflower
 
 function copyArlobotDotFiles() {
-  unison "${HOME}"/Dev/ArlobotDotfiles/metatron ssh://${REMOTE_IP}/"${HOME}" -path .arlobot -auto
+  unison "${HOME}"/Dev/ArlobotDotfiles/${REMOTE_IP} ssh://ubuntu@"${REMOTE_IP}"//home/ubuntu -path .arlobot -auto
 }
 
 copyArlobotDotFiles
 
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=("${HOME}")
-UNISON_ARGUMENTS+=(ssh://"${REMOTE_IP}"/"${HOME}")
+UNISON_ARGUMENTS+=(ssh://ubuntu@"${REMOTE_IP}"//home/ubuntu)
 UNISON_ARGUMENTS+=(-path catkin_ws/src/ArloBot)
 UNISON_ARGUMENTS+=(-ignore "Name .idea")
 UNISON_ARGUMENTS+=(-ignore "Name {*.pyc}")
