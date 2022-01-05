@@ -72,6 +72,11 @@ if [[ -d /mnt/d/Dropbox/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
 fi
 
+printf "\n${YELLOW}Does the current version of nvm we installed:${NC} "
+nvm --version
+printf "${YELLOW}Match the version on github:${NC} "
+wget -qO- https://github.com/creationix/nvm/blob/master/README.md | grep install.sh | grep wget | sed -e "s/<pre><code>//" | sed "s/\//\\n/g" | grep ^v | head -1
+
 if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
   printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
 fi

@@ -166,7 +166,7 @@ printf "\n${PURPLE}Node.js via nvm${NC}\n"
 # Copied from arlobot's setup-noetic.sh
 printf "${BLUE}[Installing/Updating Node Version Manager]${NC}\n"
 if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
-  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 fi
 
 export NVM_DIR="${HOME}/.nvm"
