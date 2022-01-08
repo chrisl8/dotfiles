@@ -173,7 +173,7 @@ if [[ -d $HOME/catkin_ws/src/ArloBot/scripts ]];then
   export PATH=$PATH:$HOME/catkin_ws/src/ArloBot/scripts
 fi
 export ROSLAUNCH_SSH_UNKNOWN=1
-if [[ -d $HOME/catkin_ws/devel/setup.zsh ]];then
+if [[ -f $HOME/catkin_ws/devel/setup.zsh ]];then
   source $HOME/catkin_ws/devel/setup.zsh
 fi
 
