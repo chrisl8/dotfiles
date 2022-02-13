@@ -32,6 +32,7 @@ UNISON_ARGUMENTS+=(-dontchmod)
 UNISON_ARGUMENTS+=(-rsrc false)
 UNISON_ARGUMENTS+=(-auto)
 UNISON_ARGUMENTS+=(-links false)
+UNISON_ARGUMENTS+=(-ignorelinks)
 UNISON_ARGUMENTS+=(-ignore "Name .vscode-server")
 UNISON_ARGUMENTS+=(-ignore "Name node_modules")
 UNISON_ARGUMENTS+=(-ignore "Name .nvm")
@@ -55,6 +56,8 @@ UNISON_ARGUMENTS+=(-ignore "Name catkin_ws/*/.git")
 UNISON_ARGUMENTS+=(-ignore "Name .oh-my-zsh") # This is entirely pulled from git
 UNISON_ARGUMENTS+=(-ignore "Name .tmux")      # This is entirely pulled from git
 UNISON_ARGUMENTS+=(-ignore "Name .opam")
+UNISON_ARGUMENTS+=(-ignore "Name .gnupg")
+UNISON_ARGUMENTS+=(-ignore "Name .zcompdump*")
 UNISON_ARGUMENTS+=(-batch)                    # Causes it to propagate changes without stopping to ask first.
 
 if [[ -d /mnt/d/Dropbox/BACKUPS/WSL2-Linux ]]; then
