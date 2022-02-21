@@ -4,7 +4,7 @@ My Linux configuration settings and setup files.
 ## Platform
 
 This is intended to work on both the latest LTS of Ubuntu **and** WSL2.
-It should also work on Raspbian as well Ubuntu on Raspberry Pi.
+It should also work on Raspbian as well as Ubuntu on Raspberry Pi.
 
 ## To Install
 
@@ -18,8 +18,8 @@ To add a key to your new system:
 Use that key for any system that you don't want to actually give your normal keys to.
 
 ```shell
-if ! (command -v git > /dev/null);then sudo apt -y install git;fi
 cd
+if ! (command -v git > /dev/null);then sudo apt -y install git;fi
 git clone git@github.com:chrisl8/dotfiles.git
 cd dotfiles
 ./setup.sh
