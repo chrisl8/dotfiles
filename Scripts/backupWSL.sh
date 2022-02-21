@@ -15,7 +15,9 @@ SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 # echo "${SCRIPT_DIR}" # For debugging
 
 if [[ -d /mnt/c/Users ]]; then
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/terminalSettings.json
+
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminalPreview_*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/terminalPreviewSettings.json
 fi
 
 if [[ -e /etc/sudoers.d/"${USER}" ]]; then
@@ -60,7 +62,9 @@ UNISON_ARGUMENTS+=(-ignore "Name .zcompdump*")
 UNISON_ARGUMENTS+=(-batch)                    # Causes it to propagate changes without stopping to ask first.
 
 if [[ -d /mnt/d/Dropbox/BACKUPS/WSL2-Linux ]]; then
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal*/LocalState/settings.json /mnt/d/Dropbox/BACKUPS/WSL2-Linux/
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json /mnt/d/Dropbox/BACKUPS/WSL2-Linux/terminalSettings.json
+
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminalPreview_*/LocalState/settings.json /mnt/d/Dropbox/BACKUPS/WSL2-Linux/terminalPreviewSettings.json
 
   printf "\n${YELLOW}Backing up to Dropbox.${NC}\n"
   unison "${UNISON_ARGUMENTS[@]}"
