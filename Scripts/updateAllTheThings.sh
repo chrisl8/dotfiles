@@ -4,12 +4,13 @@
 #BLUE='\033[0;34m'
 #GREEN='\033[0;32m'
 #RED='\033[0;31m'
-PURPLE='\033[0;35m'
+#PURPLE='\033[0;35m'
 #LIGHT_PURPLE='\033[1;35m'
 YELLOW='\033[1;33m'
 #LIGHTCYAN='\033[1;36m'
 #LIGHTBLUE='\033[1;34m'
 #LIGHTPURPLE='\033[1;35m'
+BRIGHT_MAGENTA='\033[1;95m'
 NC='\033[0m' # NoColor
 
 set -e
@@ -26,33 +27,33 @@ done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 # echo "${SCRIPT_DIR}" # For debugging
 
-printf "\n${PURPLE}Updating dotfiles${NC}\n"
+printf "\n${BRIGHT_MAGENTA}Updating dotfiles${NC}\n"
 cd ~/dotfiles || exit
 git pull
 cd || exit
 
-printf "\n${PURPLE}Updating Oh My ZSH!${NC}\n"
+printf "\n${BRIGHT_MAGENTA}Updating Oh My ZSH!${NC}\n"
 env ZSH="$ZSH" sh "$ZSH"/tools/upgrade.sh
 
-printf "\n${PURPLE}Updating powerlevel10k${NC}\n"
+printf "\n${BRIGHT_MAGENTA}Updating powerlevel10k${NC}\n"
 git -C "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k pull
 
-printf "\n${PURPLE}Updating Oh My TMUX!${NC}\n"
+printf "\n${BRIGHT_MAGENTA}Updating Oh My TMUX!${NC}\n"
 cd ~/.tmux || exit
 git pull
 cd || exit
 
-printf "\n${PURPLE}VIM Updates${NC}\n"
+printf "\n${BRIGHT_MAGENTA}VIM Updates${NC}\n"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim -c ':PlugClean | quit | quit'
 vim -c ':PlugUpdate | quit | quit'
 
-printf "\n${PURPLE}Ubuntu Updates${NC}\n"
+printf "\n${BRIGHT_MAGENTA}Ubuntu Updates${NC}\n"
 sudo apt update
 sudo apt -y upgrade
 sudo apt -y autoremove
 
-printf "\n${PURPLE}Node.js Updates${NC}\n"
+printf "\n${BRIGHT_MAGENTA}Node.js Updates${NC}\n"
 export NVM_DIR="${HOME}/.nvm"
 export NVM_SYMLINK_CURRENT=true
 # shellcheck source=/home/chrisl8/.nvm/nvm.sh
@@ -64,7 +65,7 @@ nvm alias default node
 
 QUICKEN_FOLDER_ROOT=/mnt/d
 if [[ -d ${QUICKEN_FOLDER_ROOT}/Quicken && -d /mnt/d/Dropbox/Quicken ]]; then
-  printf "\n${PURPLE}Backing up Quicken files to Dropbox${NC}\n"
+  printf "\n${BRIGHT_MAGENTA}Backing up Quicken files to Dropbox${NC}\n"
   unison ${QUICKEN_FOLDER_ROOT} /mnt/d/Dropbox -path Quicken -force ${QUICKEN_FOLDER_ROOT} -auto -batch
 fi
 

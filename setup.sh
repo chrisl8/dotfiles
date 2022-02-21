@@ -14,15 +14,17 @@ done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 # echo "${SCRIPT_DIR}" # For debugging
 
-BLUE='\033[0;34m'
+#BLUE='\033[0;34m'
 #GREEN='\033[0;32m'
 RED='\033[0;31m'
-PURPLE='\033[0;35m'
+#PURPLE='\033[0;35m'
 #LIGHT_PURPLE='\033[1;35m'
 YELLOW='\033[1;33m'
-#LIGHTCYAN='\033[1;36m'
-#LIGHTBLUE='\033[1;34m'
-#LIGHTPURPLE='\033[1;35m'
+LIGHT_CYAN='\033[1;36m'
+#LIGHT_BLUE='\033[1;34m'
+#LIGHT_PURPLE='\033[1;35m'
+#BRIGHT_WHITE='\033[1;97m'
+BRIGHT_MAGENTA='\033[1;95m'
 NC='\033[0m' # NoColor
 
 cd "${SCRIPT_DIR}"
@@ -54,7 +56,7 @@ fi
 
 cd || exit
 if ! [[ -d .tmux ]]; then
-  printf "\n${PURPLE}Installing Oh My TMUX!${NC}\n"
+  printf "\n${BRIGHT_MAGENTA}Installing Oh My TMUX!${NC}\n"
   git clone https://github.com/gpakosz/.tmux.git
 fi
 if [[ -f .tmux.conf ]]; then
@@ -74,7 +76,7 @@ fi
 cd || exit
 if ! [[ -d "${HOME}"/.oh-my-zsh ]]; then
   LOGOUT=true
-  printf "\n${PURPLE}Installing Oh My ZSH!${NC}\n"
+  printf "\n${BRIGHT_MAGENTA}Installing Oh My ZSH!${NC}\n"
   printf "\n${YELLOW}After this is done, it MAY leave you at a strange empty ~ prompt.${NC}\n"
   printf "\n${YELLOW}If so, type exit to leave that ZSH prompt and finish this setup!${NC}\n"
   sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
@@ -82,7 +84,7 @@ fi
 
 if [[ -d "${HOME}"/.oh-my-zsh ]] && ! [[ -d "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
   LOGOUT=true
-  printf "\n${PURPLE}Installing Powerlevel10k${NC}\n"
+  printf "\n${BRIGHT_MAGENTA}Installing Powerlevel10k${NC}\n"
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
 fi
 
@@ -112,7 +114,7 @@ fi
 
 if ! (grep "${USER}" /etc/passwd | grep zsh >/dev/null); then
   LOGOUT=true
-  printf "\n${PURPLE}Setting ZSH as your default shell.${NC}\n"
+  printf "\n${BRIGHT_MAGENTA}Setting ZSH as your default shell.${NC}\n"
   # Actually I think Oh My ZSH does this itself anyway, but it doesnt' hurt.
   sudo chsh -s "$(which zsh)" "$(whoami)"
 fi
@@ -142,7 +144,7 @@ if [[ -e .local ]] && [[ -e .local/share ]]; then
   fi
 fi
 
-printf "\n${PURPLE}VIM Setup${NC}\n"
+printf "\n${BRIGHT_MAGENTA}VIM Setup${NC}\n"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 if ! [[ -d .vim/plugged ]]; then
@@ -159,12 +161,12 @@ vim -c ':PlugUpdate | quit | quit'
 
 cd || exit
 
-printf "\n${PURPLE}GIT Settings${NC}\n"
+printf "\n${BRIGHT_MAGENTA}GIT Settings${NC}\n"
 git config --global core.autocrlf input
 
-printf "\n${PURPLE}Node.js via nvm${NC}\n"
+printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
 # Copied from arlobot's setup-noetic.sh
-printf "${BLUE}[Installing/Updating Node Version Manager]${NC}\n"
+printf "${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
 if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
   wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 fi
@@ -184,7 +186,7 @@ nvm install --lts
 nvm alias default node
 
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
-printf "\n${BLUE}You can run this again and again, in case there is something new to install,${NC}\n"
-printf "\n${BLUE}but consider running updateAllTheTHings.sh to update things too!${NC}\n"
+printf "\n${LIGHT_CYAN}You can run this again and again, in case there is something new to install,${NC}\n"
+printf "\n${LIGHT_CYAN}but consider running updateAllTheTHings.sh to update things too!${NC}\n"
 
 # TODO: Set up .zshenv to use pi32 or pi64 bin folders for Pi
