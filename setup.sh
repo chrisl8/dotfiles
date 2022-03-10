@@ -14,6 +14,7 @@ done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 # echo "${SCRIPT_DIR}" # For debugging
 
+# Colors: https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit
 #BLUE='\033[0;34m'
 #GREEN='\033[0;32m'
 RED='\033[0;31m'
