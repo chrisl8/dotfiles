@@ -34,9 +34,9 @@
     "defaultProfile": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c273}",
     "profiles": 
     {
-        "defaults":
+        "defaults": 
         {
-            "font":
+            "font": 
             {
                 "face": "JetBrainsMono Nerd Font"
             }
@@ -56,8 +56,13 @@
                 "name": "Command Prompt"
             },
             {
-                "guid": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c273}",
+                "closeOnExit": "always",
                 "colorScheme": "Vintage",
+                "font": 
+                {
+                    "face": "JetBrainsMono Nerd Font"
+                },
+                "guid": "{07b52e3e-de2c-5db4-bd2d-ba144ed6c273}",
                 "hidden": false,
                 "name": "Ubuntu-20.04",
                 "source": "Windows.Terminal.Wsl"
@@ -291,5 +296,6 @@
             "white": "#C0C0C0",
             "yellow": "#808000"
         }
-    ]
+    ],
+    "wordDelimiters": " ()\"':,;<>~!@#$%^&*|+=[]{}~?\u2502"
 }
