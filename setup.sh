@@ -34,6 +34,7 @@ git pull
 
 LOGOUT=false
 
+sudo apt update
 sudo apt install -y zsh tmux keychain wget curl vim
 
 if [[ -d /mnt/c/Users/chris/Dropbox ]] && ! [[ -L "${HOME}/Dropbox" ]]; then
