@@ -73,6 +73,10 @@ if [[ -d /mnt/d/Dropbox/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
 fi
 
+if (command -v wsl.exe); then
+  wsl.exe --update
+fi
+
 printf "\n${YELLOW}Does the current version of nvm we installed:${NC} "
 nvm --version
 printf "${YELLOW}Match the version on github:${NC} "
