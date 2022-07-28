@@ -14,16 +14,6 @@ done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 # echo "${SCRIPT_DIR}" # For debugging
 
-if [[ -d /mnt/c/Users ]]; then
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/terminalSettings.json
-
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminalPreview_*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/terminalPreviewSettings.json
-fi
-
-if [[ -e /etc/sudoers.d/"${USER}" ]]; then
-  cp /etc/sudoers.d/"${USER}" "${SCRIPT_DIR}"/../sudoers.d/
-fi
-
 UNISON_ARGUMENTS=()
 
 UNISON_ARGUMENTS+=("${HOME}")
