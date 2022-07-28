@@ -7,15 +7,15 @@
 # so that they show up in Dropbox searches, and then I can know to
 # go open the file in the actual Obsidian folder.
 
-PURPLE='\033[0;35m'
+BRIGHT_MAGENTA='\033[1;95m'
 NC='\033[0m' # NoColor
 
-OBSIDIAN_FOLDER="${HOME}"/Dropbox/Obsidian
+OBSIDIAN_FOLDER="${DATA_ROOT_FOLDER}"/Obsidian
 MARKDOWN_FOLDER="${OBSIDIAN_FOLDER}"/The\ Library\ of\ Babel
 TEXT_INDEX_FOLDER="${OBSIDIAN_FOLDER}"/Obsidian\ Text\ Index\ for\ Dropbox
 
 if [[ -d "${MARKDOWN_FOLDER}" && -d "${TEXT_INDEX_FOLDER}" ]]; then
-  printf "\n${PURPLE}Updating .txt copies of Obsidian files for Dropbox${NC}\n"
+  printf "\n${BRIGHT_MAGENTA}Updating .txt copies of Obsidian files for Dropbox${NC}\n"
   cd "${MARKDOWN_FOLDER}" || exit
 
   CHANGES_FOUND=0
@@ -60,7 +60,7 @@ if [[ -d "${MARKDOWN_FOLDER}" && -d "${TEXT_INDEX_FOLDER}" ]]; then
   if [[ "${CHANGES_FOUND}" == "1" ]]; then
     cd "${OBSIDIAN_FOLDER}" || exit
     git add -A
-    printf "\n${PURPLE}Committing Obsidian note changes to git${NC}\n"
+    printf "\n${BRIGHT_MAGENTA}Committing Obsidian note changes to git${NC}\n"
     git commit -m "$(date)"
   fi
 fi
