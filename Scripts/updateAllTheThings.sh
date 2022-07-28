@@ -61,26 +61,46 @@ export NVM_SYMLINK_CURRENT=true
 nvm install --lts
 nvm alias default node
 
+if (command -v wsl.exe); then
+  printf "\n${BRIGHT_MAGENTA}WSL Updates${NC}\n"
+  wsl.exe --update
+fi
+
+DROPBOX_FOLDER=/mnt/c/Users/chris/Dropbox
+
+DATA_ROOT_FOLDER=/mnt/c/Data
+export DATA_ROOT_FOLDER
+if [[ -d ${DATA_ROOT_FOLDER}/Quicken && -d ${DROPBOX_FOLDER}/Quicken ]]; then
+  printf "\n${BRIGHT_MAGENTA}Backing up Quicken files to Dropbox${NC}\n"
+  unison ${DATA_ROOT_FOLDER} ${DROPBOX_FOLDER} -path Quicken -force ${DATA_ROOT_FOLDER} -auto -batch
+fi
+
 "${SCRIPT_DIR}"/makeIndexableCopyOfObsidianMdFilesForDropbox.sh
 
-QUICKEN_FOLDER_ROOT=/mnt/d
-if [[ -d ${QUICKEN_FOLDER_ROOT}/Quicken && -d /mnt/d/Dropbox/Quicken ]]; then
-  printf "\n${BRIGHT_MAGENTA}Backing up Quicken files to Dropbox${NC}\n"
-  unison ${QUICKEN_FOLDER_ROOT} /mnt/d/Dropbox -path Quicken -force ${QUICKEN_FOLDER_ROOT} -auto -batch
-fi
-
-if [[ -d /mnt/d/Dropbox/BACKUPS/WSL2-Linux ]]; then
-  printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
-fi
-
-if (command -v wsl.exe); then
-  wsl.exe --update
+if [[ -d ${DATA_ROOT_FOLDER}/Obsidian && -d ${DROPBOX_FOLDER}/Obsidian ]]; then
+  printf "\n${BRIGHT_MAGENTA}Backing up Obsidian files to Dropbox${NC}\n"
+  unison ${DATA_ROOT_FOLDER} ${DROPBOX_FOLDER} -path Obsidian -force ${DATA_ROOT_FOLDER} -auto -batch -ignore "Name .git"
 fi
 
 printf "\n${YELLOW}Does the current version of nvm we installed:${NC} "
 nvm --version
 printf "${YELLOW}Match the version on github:${NC} "
 wget -qO- https://github.com/creationix/nvm/blob/master/README.md | grep install.sh | grep wget | sed -e "s/<pre><code>//" | sed "s/\//\\n/g" | grep ^v | head -1
+
+if [[ -d /mnt/c/Users ]]; then
+  printf "\n${BRIGHT_MAGENTA}Backing up some Linux and WSL Settings${NC}\n"
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/terminalSettings.json
+
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminalPreview_*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/terminalPreviewSettings.json
+fi
+
+if [[ -e /etc/sudoers.d/"${USER}" ]]; then
+  cp /etc/sudoers.d/"${USER}" "${SCRIPT_DIR}"/../sudoers.d/
+fi
+
+if [[ -d ${DROPBOX_FOLDER}/BACKUPS/WSL2-Linux ]]; then
+  printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
+fi
 
 if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
   printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
