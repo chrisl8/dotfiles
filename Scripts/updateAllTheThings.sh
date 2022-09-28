@@ -53,6 +53,11 @@ sudo apt update
 sudo apt -y upgrade
 sudo apt -y autoremove
 
+PM2_INSTALLED=0
+if (command -v pm2 >/dev/null); then
+  PM2_INSTALLED=1
+fi
+
 printf "\n${BRIGHT_MAGENTA}Node.js Updates${NC}\n"
 export NVM_DIR="${HOME}/.nvm"
 export NVM_SYMLINK_CURRENT=true
@@ -60,6 +65,11 @@ export NVM_SYMLINK_CURRENT=true
 [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
 nvm install --lts
 nvm alias default node
+
+if [[ ${PM2_INSTALLED} == 1 ]]; then
+  npm i -g pm2
+  pm2 install pm2-logrotate
+fi
 
 if (command -v wsl.exe); then
   printf "\n${BRIGHT_MAGENTA}WSL Updates${NC}\n"
