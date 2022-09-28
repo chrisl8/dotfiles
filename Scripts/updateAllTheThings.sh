@@ -67,6 +67,7 @@ nvm install --lts
 nvm alias default node
 
 if [[ ${PM2_INSTALLED} == 1 ]]; then
+  printf "\n${BRIGHT_MAGENTA}Reinstalling PM2${NC}\n"
   npm i -g pm2
   pm2 install pm2-logrotate
 fi
