@@ -1,5 +1,5 @@
 #!/bin/bash
-REMOTE_IP=192.168.1.49
+REMOTE_IP=192.168.1.118
 
 
 function copyArlobotDotFiles() {
