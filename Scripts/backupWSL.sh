@@ -1,23 +1,11 @@
 #!/bin/bash
-# shellcheck disable=SC2059
 
 set -e
-
-# Grab and save the path to this script
-# http://stackoverflow.com/a/246128
-SOURCE="${BASH_SOURCE[0]}"
-while [[ -L "$SOURCE" ]]; do # resolve $SOURCE until the file is no longer a symlink
-  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ ${SOURCE} != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-done
-SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-# echo "${SCRIPT_DIR}" # For debugging
 
 UNISON_ARGUMENTS=()
 
 UNISON_ARGUMENTS+=("${HOME}")
-UNISON_ARGUMENTS+=(/mnt/d/Dropbox/BACKUPS/WSL2-Linux/home/chrisl8)
+UNISON_ARGUMENTS+=(/mnt/c/Data/BACKUPS/WSL2-Linux/home/chrisl8)
 UNISON_ARGUMENTS+=(-force "${HOME}")
 UNISON_ARGUMENTS+=(-perms 0)
 UNISON_ARGUMENTS+=(-dontchmod)
@@ -49,12 +37,12 @@ UNISON_ARGUMENTS+=(-ignore "Name .tmux")      # This is entirely pulled from git
 UNISON_ARGUMENTS+=(-ignore "Name .opam")
 UNISON_ARGUMENTS+=(-ignore "Name .gnupg")
 UNISON_ARGUMENTS+=(-ignore "Name .zcompdump*")
-UNISON_ARGUMENTS+=(-batch)                    # Causes it to propagate changes without stopping to ask first.
+#UNISON_ARGUMENTS+=(-batch)                    # Causes it to propagate changes without stopping to ask first.
 
-if [[ -d /mnt/d/Dropbox/BACKUPS/WSL2-Linux ]]; then
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json /mnt/d/Dropbox/BACKUPS/WSL2-Linux/terminalSettings.json
+if [[ -d /mnt/c/Data/BACKUPS/WSL2-Linux ]]; then
+  #cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json /mnt/c/Data/BACKUPS/WSL2-Linux/terminalSettings.json
 
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminalPreview_*/LocalState/settings.json /mnt/d/Dropbox/BACKUPS/WSL2-Linux/terminalPreviewSettings.json
+  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminalPreview_*/LocalState/settings.json /mnt/c/Data/BACKUPS/WSL2-Linux/terminalPreviewSettings.json
 
   printf "\n${YELLOW}Backing up to Dropbox.${NC}\n"
   unison "${UNISON_ARGUMENTS[@]}"
