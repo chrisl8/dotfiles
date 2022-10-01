@@ -75,6 +75,7 @@ fi
 if (command -v wsl.exe); then
   printf "\n${BRIGHT_MAGENTA}WSL Updates${NC}\n"
   wsl.exe --update
+  wsl.exe --status
 fi
 
 DROPBOX_FOLDER=/mnt/c/Users/chris/Dropbox
