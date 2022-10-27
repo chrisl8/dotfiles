@@ -63,7 +63,9 @@ export NVM_DIR="${HOME}/.nvm"
 export NVM_SYMLINK_CURRENT=true
 # shellcheck source=/home/chrisl8/.nvm/nvm.sh
 [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
-nvm install --lts
+
+nvm install node --latest-npm
+nvm use node
 nvm alias default node
 
 if [[ ${PM2_INSTALLED} == 1 ]]; then
@@ -74,6 +76,8 @@ fi
 
 if (command -v wsl.exe); then
   printf "\n${BRIGHT_MAGENTA}WSL Updates${NC}\n"
+  printf "NOTE: If this just terminates Linux, you may need to open PowerShell and run:\n"
+  printf "wsl.exe --update\n\n"
   wsl.exe --update
   wsl.exe --status
 fi

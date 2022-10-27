@@ -184,7 +184,8 @@ if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
   # NOTE: This is already set it our standard .zshrc file, so no need to set it there.
 fi
 
-nvm install --lts
+nvm install node --latest-npm
+nvm use node
 nvm alias default node
 
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
