@@ -74,6 +74,10 @@ if [[ ${PM2_INSTALLED} == 1 ]]; then
   pm2 install pm2-logrotate
 fi
 
+cd "${SCRIPT_DIR}/node"
+npm ci
+cd "${SCRIPT_DIR}"
+
 if (command -v wsl.exe); then
   printf "\n${BRIGHT_MAGENTA}WSL Updates${NC}\n"
   printf "NOTE: If this just terminates Linux, you may need to open PowerShell and run:\n"

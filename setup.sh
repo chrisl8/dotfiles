@@ -188,6 +188,10 @@ nvm install node --latest-npm
 nvm use node
 nvm alias default node
 
+cd "${SCRIPT_DIR}/node"
+npm ci
+cd "${SCRIPT_DIR}"
+
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
 printf "\n${LIGHT_CYAN}You can run this again and again, in case there is something new to install,${NC}\n"
 printf "\n${LIGHT_CYAN}but consider running updateAllTheTHings.sh to update things too!${NC}\n"

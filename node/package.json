@@ -1,0 +1,10 @@
+{
+  "name": "dotfiles",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "es-main": "^1.2.0",
+    "json5": "^2.2.1",
+    "prettier": "^2.7.1"
+  }
+}
