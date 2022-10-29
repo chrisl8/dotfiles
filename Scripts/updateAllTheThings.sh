@@ -74,7 +74,7 @@ if [[ ${PM2_INSTALLED} == 1 ]]; then
   pm2 install pm2-logrotate
 fi
 
-cd "${SCRIPT_DIR}/node"
+cd "${SCRIPT_DIR}/../node"
 npm ci
 cd "${SCRIPT_DIR}"
 
