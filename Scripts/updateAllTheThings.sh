@@ -64,9 +64,12 @@ export NVM_SYMLINK_CURRENT=true
 # shellcheck source=/home/chrisl8/.nvm/nvm.sh
 [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
 
-nvm install node --latest-npm
+nvm install node
 nvm use node
 nvm alias default node
+
+printf "\n${BRIGHT_MAGENTA}Installing latest NPM version${NC}\n"
+npm i -g npm
 
 if [[ ${PM2_INSTALLED} == 1 ]]; then
   printf "\n${BRIGHT_MAGENTA}Reinstalling PM2${NC}\n"
