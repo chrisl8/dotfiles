@@ -148,7 +148,9 @@ source $ZSH/oh-my-zsh.sh
 
 set -o vi
 
+# Keychain for SSH
 keychain -q id_rsa
+keychain -q id_ed25519
 source ~/.keychain/`uname -n`-sh
 
 export EDITOR=vim
