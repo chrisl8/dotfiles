@@ -5,6 +5,11 @@
   "dependencies": {
     "es-main": "^1.2.0",
     "json5": "^2.2.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.22.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0"
   }
 }
