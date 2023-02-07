@@ -21,8 +21,6 @@ if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
   printf "\n${YELLOW}[Setting the NVM current environment in your .bashrc file]${NC}\n"
   sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.bashrc"
 fi
-nvm install --lts
-nvm alias default "lts/*"
 
 printf "\n${YELLOW}Does the current version of nvm we installed:${NC} "
 nvm --version
