@@ -110,13 +110,6 @@ nvm --version
 printf "${YELLOW}Match the version on github:${NC} "
 wget -qO- https://github.com/creationix/nvm/blob/master/README.md | grep install.sh | grep wget | sed -e "s/<pre><code>//" | sed "s/\//\\n/g" | grep ^v | head -1
 
-if [[ -d /mnt/c/Users ]]; then
-  printf "\n${BRIGHT_MAGENTA}Backing up some Linux and WSL Settings${NC}\n"
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/terminalSettings.json
-
-  cp /mnt/c/Users/*/AppData/Local/Packages/Microsoft.WindowsTerminalPreview_*/LocalState/settings.json "${SCRIPT_DIR}"/../WSL2/WindowsTerminal/terminalPreviewSettings.json
-fi
-
 if [[ -e /etc/sudoers.d/"${USER}" ]]; then
   cp /etc/sudoers.d/"${USER}" "${SCRIPT_DIR}"/../sudoers.d/
 fi
