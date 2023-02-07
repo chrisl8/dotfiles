@@ -194,6 +194,6 @@ cd "${SCRIPT_DIR}"
 
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
 printf "\n${LIGHT_CYAN}You can run this again and again, in case there is something new to install,${NC}\n"
-printf "\n${LIGHT_CYAN}but consider running updateAllTheTHings.sh to update things too!${NC}\n"
+printf "\n${LIGHT_CYAN}but consider running updateAllTheThings.sh to update things too!${NC}\n"
 
 # TODO: Set up .zshenv to use pi32 or pi64 bin folders for Pi
