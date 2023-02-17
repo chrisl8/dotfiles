@@ -89,9 +89,9 @@ if (command -v wsl.exe); then
   wsl.exe --status
 fi
 
-DROPBOX_FOLDER=/mnt/c/Users/chris/Dropbox
+DROPBOX_FOLDER=/mnt/d/Dropbox
 
-DATA_ROOT_FOLDER=/mnt/c/Data
+DATA_ROOT_FOLDER=/mnt/d
 export DATA_ROOT_FOLDER
 if [[ -d ${DATA_ROOT_FOLDER}/Quicken && -d ${DROPBOX_FOLDER}/Quicken ]]; then
   printf "\n${BRIGHT_MAGENTA}Backing up Quicken files to Dropbox${NC}\n"
