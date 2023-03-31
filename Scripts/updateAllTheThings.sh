@@ -82,9 +82,12 @@ npm ci
 cd "${SCRIPT_DIR}"
 
 if (command -v wsl.exe); then
+  # https://github.com/microsoft/WSL/issues/8603#issuecomment-1357669697
   printf "\n${BRIGHT_MAGENTA}WSL Updates${NC}\n"
-  printf "NOTE: If this just terminates Linux, you may need to open PowerShell and run:\n"
-  printf "wsl.exe --update\n\n"
+  printf "NOTE: If this just terminates Linux or otherwise fails, you may need to open PowerShell AS ADMINISTRATOR and run:\n"
+  printf "wsl --update\n"
+  printf "or if that fails try:\n"
+  printf "wsl --update --web-download\n\n"
   wsl.exe --update || true
   wsl.exe --status
 fi
