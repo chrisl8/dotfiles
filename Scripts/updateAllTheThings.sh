@@ -33,7 +33,7 @@ git pull
 cd || exit
 
 printf "\n${BRIGHT_MAGENTA}Updating Oh My ZSH!${NC}\n"
-env ZSH="$ZSH" sh "$ZSH"/tools/upgrade.sh
+env ZSH="$ZSH" zsh "$ZSH"/tools/upgrade.sh
 
 printf "\n${BRIGHT_MAGENTA}Updating powerlevel10k${NC}\n"
 git -C "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k pull
