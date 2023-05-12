@@ -1,11 +1,13 @@
 #!/bin/bash
-REMOTE_IP=192.168.1.157
+REMOTE_IP=orac
 
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=(/home/chrisl8/Dev/Orac)
-UNISON_ARGUMENTS+=(ssh://"ovos@${REMOTE_IP}"//home/ovos/Orac)
+UNISON_ARGUMENTS+=(ssh://"${REMOTE_IP}"//home/chrisl8/Orac)
 UNISON_ARGUMENTS+=(-ignore "Path node/node_modules") # These are different on Pi and x86
 UNISON_ARGUMENTS+=(-ignore "Path .idea")
+UNISON_ARGUMENTS+=(-ignore "Path website-source")
+UNISON_ARGUMENTS+=(-ignore "Path venv")
 UNISON_ARGUMENTS+=(-auto)
 
 if unison "${UNISON_ARGUMENTS[@]}"; then
