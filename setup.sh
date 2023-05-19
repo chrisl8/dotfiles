@@ -3,17 +3,6 @@
 
 set -e
 
-# Grab and save the path to this script
-# http://stackoverflow.com/a/246128
-SOURCE="${BASH_SOURCE[0]}"
-while [[ -L "$SOURCE" ]]; do # resolve $SOURCE until the file is no longer a symlink
-  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ ${SOURCE} != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-done
-SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-# echo "${SCRIPT_DIR}" # For debugging
-
 # Colors: https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit
 #BLUE='\033[0;34m'
 #GREEN='\033[0;32m'
@@ -43,36 +32,36 @@ if ! (command -v gh >/dev/null); then
   sudo apt install gh -y
 fi
 
-cd || exit
+cd || exit 1
 if ! [[ -d ~/dotfiles ]]; then
   gh repo clone chrisl8/dotfiles
 fi
 
-cd ~/dotfiles || exit
+cd ~/dotfiles || exit 1
 git pull
 
 LOGOUT=false
 
 if [[ -d /mnt/c/Users/chris/Dropbox ]] && ! [[ -L "${HOME}/Dropbox" ]]; then
-  cd || exit
+  cd || exit 1
   ln -s /mnt/c/Users/chris/Dropbox .
   echo yes
 fi
 
 if [[ -d /mnt/d/Dropbox ]] && ! [[ -L "${HOME}/Dropbox" ]]; then
-  cd || exit
+  cd || exit 1
   ln -s /mnt/d/Dropbox .
   echo yes
 fi
 
 if ! [[ -d "${HOME}"/.ssh ]]; then
-  cd || exit
+  cd || exit 1
   mkdir .ssh
   chmod go-rwx .ssh
   printf "\n${RED}Add your SSH keys to ~/.ssh !!!${NC}\n"
 fi
 
-cd || exit
+cd || exit 1
 if ! [[ -d .tmux ]]; then
   printf "\n${BRIGHT_MAGENTA}Installing Oh My TMUX!${NC}\n"
   git clone https://github.com/gpakosz/.tmux.git
@@ -91,7 +80,7 @@ if ! [[ -L .tmux.conf.local ]]; then
   ln -s dotfiles/.tmux.conf.local .
 fi
 
-cd || exit
+cd || exit 1
 if ! [[ -d "${HOME}"/.oh-my-zsh ]]; then
   LOGOUT=true
   printf "\n${BRIGHT_MAGENTA}Installing Oh My ZSH!${NC}\n"
@@ -106,7 +95,7 @@ if [[ -d "${HOME}"/.oh-my-zsh ]] && ! [[ -d "${HOME}"/.oh-my-zsh/custom/themes/p
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
 fi
 
-cd || exit
+cd || exit 1
 if [[ -f .zshrc ]]; then
   rm .zshrc
 fi
@@ -114,7 +103,7 @@ if ! [[ -L .zshrc ]]; then
   ln -s dotfiles/.zshrc .
 fi
 
-cd || exit
+cd || exit 1
 if [[ -f .zshenv ]]; then
   rm .zshenv
 fi
@@ -122,7 +111,7 @@ if ! [[ -L .zshenv ]]; then
   ln -s dotfiles/.zshenv .
 fi
 
-cd || exit
+cd || exit 1
 if [[ -f .p10k.zsh ]]; then
   rm .p10k.zsh
 fi
@@ -143,9 +132,9 @@ if [[ "${LOGOUT}" == "true" ]]; then
   printf "\n${YELLOW}See README.md for instructions.${NC}\n"
 fi
 
-cd || exit
+cd || exit 1
 
-cd || exit
+cd || exit 1
 if [[ -f .vimrc ]]; then
   rm .vimrc
 fi
@@ -153,12 +142,12 @@ if ! [[ -L .vimrc ]]; then
   ln -s dotfiles/.vimrc .
 fi
 
-cd || exit
+cd || exit 1
 if [[ -e .local ]] && [[ -e .local/share ]]; then
   if ! [[ -e .local/share/fonts ]]; then
     cd ~/.local/share
     ln -s ~/dotfiles/fonts .
-    cd || exit
+    cd || exit 1
   fi
 fi
 
@@ -177,7 +166,7 @@ vim -c ':PlugInstall | quit | quit'
 vim -c ':PlugClean | quit | quit'
 vim -c ':PlugUpdate | quit | quit'
 
-cd || exit
+cd || exit 1
 
 printf "\n${BRIGHT_MAGENTA}GIT Settings${NC}\n"
 git config --global core.autocrlf false
@@ -204,9 +193,9 @@ nvm install node --latest-npm
 nvm use node
 nvm alias default node
 
-cd "${SCRIPT_DIR}/node"
+cd ~/dotfiles/node || exit 1
 npm ci
-cd "${SCRIPT_DIR}"
+cd || exit 1
 
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
 printf "\n${LIGHT_CYAN}You can run this again and again, in case there is something new to install,${NC}\n"
