@@ -30,12 +30,28 @@ NC='\033[0m' # NoColor
 
 cd "${SCRIPT_DIR}"
 
+sudo apt update
+sudo apt install -y zsh tmux keychain wget curl vim
+
+if ! (command -v gh >/dev/null); then
+  # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+  printf "\n${YELLOW}[Installing Github CLI]${NC}\n"
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+  sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+  sudo apt update
+  sudo apt install gh -y
+fi
+
+cd || exit
+if ! [[ -d ~/dotfiles ]]; then
+  gh repo clone chrisl8/dotfiles
+fi
+
+cd ~/dotfiles || exit
 git pull
 
 LOGOUT=false
-
-sudo apt update
-sudo apt install -y zsh tmux keychain wget curl vim
 
 if [[ -d /mnt/c/Users/chris/Dropbox ]] && ! [[ -L "${HOME}/Dropbox" ]]; then
   cd || exit
@@ -164,7 +180,7 @@ vim -c ':PlugUpdate | quit | quit'
 cd || exit
 
 printf "\n${BRIGHT_MAGENTA}GIT Settings${NC}\n"
-git config --global core.autocrlf input
+git config --global core.autocrlf false
 
 printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
 # Copied from arlobot's setup-noetic.sh
