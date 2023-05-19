@@ -1,4 +1,6 @@
 #!/bin/bash
+backupOrac.sh
+
 REMOTE_IP=orac
 
 UNISON_ARGUMENTS=()
