@@ -8,22 +8,35 @@ It should also work on Raspbian as well as Ubuntu on Raspberry Pi.
 
 ## To Install
 
-Because this is a Private repository, you need to authenticate yourself.
-This repository has a Deploy Key on it, and the private key should be in:
-`/home/chrisl8/Dropbox/Documents/keys/dotfilesDeployKey/id_rsa`
+Because this is a Private repository, you need to authenticate yourself or use a token.  
 
-To add a key to your new system:  
-`mkdir .ssh;vi .ssh/id_rsa;chmod -R go-rw .ssh`
+You will have to go into your "Developer Settings" in Github Settings and set up a key.  
+https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token
 
-Use that key for any system that you don't want to actually give your normal keys to.
+1. https://github.com/settings/profile
+2. <> Developer Settings
+3. Personal access tokens
+4. Fine-grained tokens
+5. Generate new token
+6. Give it a name
+7. The furthest expiration date possible is 1 year out, so do that.
+8. Only select repositories
+9. Pick this one
+10. Repository Permissions -> Content -> Read-Only
+11. Generate token
+
+Save it somewhere safe.
+
+This is how I perform this install on a new system using said token:  
 
 ```shell
-cd
-if ! (command -v git > /dev/null);then sudo apt -y install git;fi
-git clone git@github.com:chrisl8/dotfiles.git
-cd dotfiles
-./setup.sh
+type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+curl -H 'Authorization: token <TOKEN>' \
+  -H 'Accept: application/vnd.github.v4.raw' \
+  -O \
+  -L https://raw.githubusercontent.com/chrisl8/dotfiles/main/setup.sh && chmod +x ./setup.sh && ./setup.sh && rm ./setup.sh
 ```
+
 
 # Fonts
 
