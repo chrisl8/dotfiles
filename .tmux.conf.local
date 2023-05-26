@@ -11,6 +11,9 @@
 # Or from the shell run:
 #tmux source-file ~/.tmux.conf
 
+# Use this page to find the icons that you want
+# https://www.nerdfonts.com/cheat-sheet
+
 
 # -- navigation ----------------------------------------------------------------
 
@@ -268,13 +271,13 @@ tmux_conf_theme_pairing_bg="none"
 tmux_conf_theme_pairing_attr="none"
 
 # prefix indicator
-tmux_conf_theme_prefix=" "
+tmux_conf_theme_prefix=" "
 tmux_conf_theme_prefix_fg="none"
 tmux_conf_theme_prefix_bg="none"
 tmux_conf_theme_prefix_attr="none"
 
 # mouse indicator
-tmux_conf_theme_mouse=""                   # U+2197
+tmux_conf_theme_mouse="󰍽"                   # U+2197
 tmux_conf_theme_mouse_fg="none"
 tmux_conf_theme_mouse_bg="none"
 tmux_conf_theme_mouse_attr="none"
@@ -292,8 +295,8 @@ tmux_conf_theme_synchronized_bg="none"
 tmux_conf_theme_synchronized_attr="none"
 
 # battery bar symbols
-tmux_conf_battery_bar_symbol_full="◼"
-tmux_conf_battery_bar_symbol_empty="◻"
+tmux_conf_battery_bar_symbol_full=""
+tmux_conf_battery_bar_symbol_empty=""
 #tmux_conf_battery_bar_symbol_full="♥"
 #tmux_conf_battery_bar_symbol_empty="·"
 
@@ -326,8 +329,8 @@ tmux_conf_battery_vbar_palette="gradient"
 # symbols used to indicate whether battery is charging or discharging
 #tmux_conf_battery_status_charging='↑'       # U+2191
 #tmux_conf_battery_status_discharging='↓'    # U+2193
-tmux_conf_battery_status_charging='⚡ '    # U+26A1
-#tmux_conf_battery_status_charging='🔌 '    # U+1F50C
+#tmux_conf_battery_status_charging='⚡ '    # U+26A1
+tmux_conf_battery_status_charging='🔌 '    # U+1F50C
 tmux_conf_battery_status_discharging='🔋 ' # U+1F50B
 
 # clock style (when you hit <prefix> + t)
