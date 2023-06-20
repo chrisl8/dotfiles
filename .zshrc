@@ -155,7 +155,9 @@ fi
 if [[ -e ~/.ssh/id_ed25519 ]]; then
   keychain -q id_ed25519
 fi
-source ~/.keychain/`uname -n`-sh
+if [[ -e ~/.keychain/`uname -n`-sh ]]; then
+  source ~/.keychain/`uname -n`-sh
+fi
 
 export EDITOR=vim
 export VISUAL=vim
