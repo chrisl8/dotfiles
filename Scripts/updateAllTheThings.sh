@@ -75,6 +75,8 @@ if [[ ${PM2_INSTALLED} == 1 ]]; then
   printf "\n${BRIGHT_MAGENTA}Reinstalling PM2${NC}\n"
   npm i -g pm2
   pm2 install pm2-logrotate
+  # I have literally never looked at a historical pm2 log, so retaining just 1 saves a lot of space on VMs and Raspberry Pis.
+  pm2 set pm2-logrotate:retain 1
 fi
 
 cd "${SCRIPT_DIR}/../node"
