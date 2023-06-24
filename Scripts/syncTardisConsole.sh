@@ -1,12 +1,10 @@
 #!/bin/bash
-backupPanicStations.sh
+REMOTE_IP=TARDIS-Console
 
-REMOTE_IP=PanicStations
+scp "${REMOTE_IP}":/home/chrisl8/PanicStations/gamePlayStats.sqlite /mnt/d/Dropbox/BACKUPS/TardisConsole
+scp "${REMOTE_IP}":/home/chrisl8/PanicStations/server.sqlite /mnt/d/Dropbox/BACKUPS/TardisConsole
 
-scp "${REMOTE_IP}":/home/chrisl8/PanicStations/gamePlayStats.sqlite /mnt/d/Dropbox/BACKUPS/PanicStations
-scp "${REMOTE_IP}":/home/chrisl8/PanicStations/server.sqlite /mnt/d/Dropbox/BACKUPS/PanicStations
-
-scp "${REMOTE_IP}":/home/chrisl8/PanicStations/settings.json5 /home/chrisl8/Dev/PanicStations/exampleSettings/OriginalTwoStation.json5
+scp "${REMOTE_IP}":/home/chrisl8/PanicStations/settings.json5 /home/chrisl8/Dev/PanicStations/exampleSettings/TardisConsole.json5
 
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=(/home/chrisl8/Dev/PanicStations)
