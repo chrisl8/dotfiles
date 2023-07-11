@@ -198,6 +198,11 @@ cd ~/dotfiles/node || exit 1
 npm ci
 cd || exit 1
 
+git config --global init.defaultBranch main
+git config --global core.autocrlf input
+git config --global user.name "Christen Lofland"
+git config --global user.email "christen@lofland.net"
+
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
 printf "\n${LIGHT_CYAN}You can run this again and again, in case there is something new to install,${NC}\n"
 printf "\n${LIGHT_CYAN}but consider running updateAllTheThings.sh to update things too!${NC}\n"
