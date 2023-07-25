@@ -11,7 +11,9 @@ if [[ -e ${HOME}/.nvm/nvm.sh ]]; then
   nvm deactivate
 fi
 
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+NVM_VERSION=$(curl -s https://api.github.com/repositories/612230/releases/latest | grep tag_name | cut -d '"' -f 4)
+
+wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh" | bash
 export NVM_DIR="${HOME}/.nvm"
 # shellcheck source=/home/chrisl8/.nvm/nvm.sh
 [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm

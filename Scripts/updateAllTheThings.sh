@@ -110,10 +110,10 @@ if [[ -d ${DATA_ROOT_FOLDER}/Obsidian && -d ${DROPBOX_FOLDER}/Obsidian ]]; then
   unison ${DATA_ROOT_FOLDER} ${DROPBOX_FOLDER} -path Obsidian -force ${DATA_ROOT_FOLDER} -auto -batch -ignore "Name .git"
 fi
 
+NVM_VERSION=$(curl -s https://api.github.com/repositories/612230/releases/latest | grep tag_name | cut -d '"' -f 4)
 printf "\n${YELLOW}Does the current version of nvm we installed:${NC} "
 nvm --version
-printf "${YELLOW}Match the version on github:${NC} "
-curl -s https://api.github.com/repositories/612230/releases/latest | grep tag_name | cut -d '"' -f 4
+printf "${YELLOW}Match the version on github:${NC} ${NVM_VERSION}"
 
 if [[ -e /etc/sudoers.d/"${USER}" ]]; then
   cp /etc/sudoers.d/"${USER}" "${SCRIPT_DIR}"/../sudoers.d/
