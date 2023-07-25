@@ -58,25 +58,64 @@ if (command -v pm2 >/dev/null); then
   PM2_INSTALLED=1
 fi
 
-printf "\n${BRIGHT_MAGENTA}Node.js Updates${NC}\n"
 export NVM_DIR="${HOME}/.nvm"
 export NVM_SYMLINK_CURRENT=true
 # shellcheck source=/home/chrisl8/.nvm/nvm.sh
 [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
+NVM_VERSION_LATEST="${NVM_TAG//v/}"
+NVM_VERSION=$(nvm --version)
+if [ "$NVM_VERSION" != "$NVM_VERSION_LATEST" ]; then
+  printf "\n${BRIGHT_MAGENTA}Updating NVM from ${NVM_VERSION} to ${NVM_VERSION_LATEST}${NC}\n"
 
+  if [[ -e ${HOME}/.nvm/nvm.sh ]]; then
+    printf "${LIGHTBLUE}Deactivating existing Node Version Manager:${NC}\n"
+    export NVM_DIR="${HOME}/.nvm"
+    # shellcheck source=/home/chrisl8/.nvm/nvm.sh
+    [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+    nvm deactivate
+  fi
+
+  wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_TAG/install.sh" | bash
+  export NVM_DIR="${HOME}/.nvm"
+  # shellcheck source=/home/chrisl8/.nvm/nvm.sh
+  [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+  export NVM_SYMLINK_CURRENT=true
+  if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
+    printf "\n${YELLOW}[Setting the NVM current environment in your .bashrc file]${NC}\n"
+    sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.bashrc"
+  fi
+  if ! (grep NVM_SYMLINK_CURRENT ~/.zshrc >/dev/null); then
+    printf "\n${YELLOW}[Setting the NVM current environment in your .zshrc file]${NC}\n"
+    sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.zshrc"
+  fi
+fi
+
+NODE_VERSION=$(node -v)
+
+printf "\n${BRIGHT_MAGENTA}Node.js Updates${NC}\n"
 nvm install node
 nvm use node
 nvm alias default node
 
-printf "\n${BRIGHT_MAGENTA}Installing latest NPM version${NC}\n"
-npm i -g npm
+NODE_VERSION_NEW=$(node -v)
+
+NPM_VERSION=$(npm -v)
+NPM_VERSION_LATEST=$(npm view npm version)
+if [ "$NPM_VERSION" != "$NPM_VERSION_LATEST" ]; then
+  printf "\n${BRIGHT_MAGENTA}Updating NPM from ${NPM_VERSION} to ${NPM_VERSION_LATEST}${NC}\n"
+  npm i -g npm
+fi
 
 if [[ ${PM2_INSTALLED} == 1 ]]; then
-  printf "\n${BRIGHT_MAGENTA}Reinstalling PM2${NC}\n"
-  npm i -g pm2
-  pm2 install pm2-logrotate
-  # I have literally never looked at a historical pm2 log, so retaining just 1 saves a lot of space on VMs and Raspberry Pis.
-  pm2 set pm2-logrotate:retain 1
+  if [ "$NODE_VERSION" != "$NODE_VERSION_NEW" ] || [ "$(pm2 -v)" != "$(npm view pm2 version)" ];then
+    printf "\n${BRIGHT_MAGENTA}Reinstalling/Updating PM2${NC}\n"
+    npm i -g pm2
+    pm2 install pm2-logrotate
+    # I have literally never looked at a historical pm2 log, so retaining just 1 saves a lot of space on VMs and Raspberry Pis.
+    pm2 set pm2-logrotate:retain 1
+  fi
 fi
 
 cd "${SCRIPT_DIR}/../node"
@@ -110,11 +149,6 @@ if [[ -d ${DATA_ROOT_FOLDER}/Obsidian && -d ${DROPBOX_FOLDER}/Obsidian ]]; then
   unison ${DATA_ROOT_FOLDER} ${DROPBOX_FOLDER} -path Obsidian -force ${DATA_ROOT_FOLDER} -auto -batch -ignore "Name .git"
 fi
 
-NVM_VERSION=$(curl -s https://api.github.com/repositories/612230/releases/latest | grep tag_name | cut -d '"' -f 4)
-printf "\n${YELLOW}Does the current version of nvm we installed:${NC} "
-nvm --version
-printf "${YELLOW}Match the version on github:${NC} ${NVM_VERSION}\n"
-
 if [[ -e /etc/sudoers.d/"${USER}" ]]; then
   cp /etc/sudoers.d/"${USER}" "${SCRIPT_DIR}"/../sudoers.d/
 fi
@@ -125,4 +159,9 @@ fi
 
 if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
   printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
+fi
+
+if [ "$NODE_VERSION" != "$NODE_VERSION_NEW" ]; then
+  printf "\n${YELLOW}Node.js has been updated from ${NODE_VERSION} to ${NODE_VERSION_NEW}${NC}\n"
+  printf "You should close this terminal session and start a new one to activate the new Node.js version.\n"
 fi

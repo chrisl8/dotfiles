@@ -173,8 +173,8 @@ printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
 # Copied from arlobot's setup-noetic.sh
 printf "\n${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
 if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
-  NVM_VERSION=$(curl -s https://api.github.com/repositories/612230/releases/latest | grep tag_name | cut -d '"' -f 4)
-  wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh" | bash
+  NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
+  wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_TAG/install.sh" | bash
 fi
 
 export NVM_DIR="${HOME}/.nvm"
