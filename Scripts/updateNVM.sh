@@ -25,4 +25,4 @@ fi
 printf "\n${YELLOW}Does the current version of nvm we installed:${NC} "
 nvm --version
 printf "${YELLOW}Match the version on github:${NC} "
-wget -qO- https://github.com/creationix/nvm/blob/master/README.md | grep install.sh | grep wget | sed -e "s/<pre><code>//" | sed "s/\//\\n/g" | grep ^v | head -1
+curl -s https://api.github.com/repositories/612230/releases/latest | grep tag_name | cut -d '"' -f 4
