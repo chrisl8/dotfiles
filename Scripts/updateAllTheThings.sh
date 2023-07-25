@@ -115,8 +115,6 @@ nvm --version
 printf "${YELLOW}Match the version on github:${NC} "
 curl -s https://api.github.com/repositories/612230/releases/latest | grep tag_name | cut -d '"' -f 4
 
-curl -s https://api.github.com/repos/612230/latest
-
 if [[ -e /etc/sudoers.d/"${USER}" ]]; then
   cp /etc/sudoers.d/"${USER}" "${SCRIPT_DIR}"/../sudoers.d/
 fi
