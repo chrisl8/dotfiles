@@ -118,6 +118,8 @@ if [[ ${PM2_INSTALLED} == 1 ]]; then
   fi
 fi
 
+printf "\n${BRIGHT_MAGENTA}Updating dotfiles Node dependencies${NC}\n"
+# TODO: Only do this if dotfiles DID update or if Node.js was updated.
 cd "${SCRIPT_DIR}/../node"
 npm ci
 cd "${SCRIPT_DIR}"
