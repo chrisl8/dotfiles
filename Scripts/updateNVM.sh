@@ -26,5 +26,4 @@ fi
 
 printf "\n${YELLOW}Does the current version of nvm we installed:${NC} "
 nvm --version
-printf "${YELLOW}Match the version on github:${NC} "
-curl -s https://api.github.com/repositories/612230/releases/latest | grep tag_name | cut -d '"' -f 4
+printf "${YELLOW}Match the version on github:${NC} ${NVM_VERSION}\n"
