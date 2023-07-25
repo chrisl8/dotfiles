@@ -169,9 +169,6 @@ vim -c ':PlugUpdate | quit | quit'
 
 cd || exit 1
 
-printf "\n${BRIGHT_MAGENTA}GIT Settings${NC}\n"
-git config --global core.autocrlf false
-
 printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
 # Copied from arlobot's setup-noetic.sh
 printf "\n${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
@@ -198,10 +195,11 @@ cd ~/dotfiles/node || exit 1
 npm ci
 cd || exit 1
 
-git config --global init.defaultBranch main
-git config --global core.autocrlf input
+printf "\n${BRIGHT_MAGENTA}GIT Settings${NC}\n"
 git config --global user.name "Christen Lofland"
 git config --global user.email "christen@lofland.net"
+git config --global init.defaultBranch main
+git config --global core.autocrlf false
 
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
 printf "\n${LIGHT_CYAN}You can run this again and again, in case there is something new to install,${NC}\n"
