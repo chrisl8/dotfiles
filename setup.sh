@@ -65,7 +65,7 @@ fi
 cd || exit 1
 if ! [[ -d .tmux ]]; then
   printf "\n${BRIGHT_MAGENTA}Installing Oh My TMUX!${NC}\n"
-  git clone https://github.com/gpakosz/.tmux.git
+  gh repo clone https://github.com/gpakosz/.tmux.git
 fi
 if [[ -f .tmux.conf ]]; then
   rm .tmux.conf
@@ -93,7 +93,7 @@ fi
 if [[ -d "${HOME}"/.oh-my-zsh ]] && ! [[ -d "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
   LOGOUT=true
   printf "\n${BRIGHT_MAGENTA}Installing Powerlevel10k${NC}\n"
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
+  gh repo clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
 fi
 
 cd || exit 1
@@ -170,7 +170,6 @@ vim -c ':PlugUpdate | quit | quit'
 cd || exit 1
 
 printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
-# Copied from arlobot's setup-noetic.sh
 printf "\n${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
 if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
   NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
