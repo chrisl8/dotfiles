@@ -8,7 +8,7 @@ It should also work on Raspbian as well as Ubuntu on Raspberry Pi.
 
 ## To Install
 
-Because this is a Private repository, you need to authenticate yourself or use a token.  
+Because this is a Private repository, you need to authenticate yourself.
 
 You will have to go into your "Developer Settings" in Github Settings and set up a key.  
 https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token
