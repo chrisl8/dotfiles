@@ -135,28 +135,14 @@ if (command -v wsl.exe); then
   wsl.exe --status
 fi
 
-DROPBOX_FOLDER=/mnt/d/Dropbox
-
-DATA_ROOT_FOLDER=/mnt/d
-export DATA_ROOT_FOLDER
-if [[ -d ${DATA_ROOT_FOLDER}/Quicken && -d ${DROPBOX_FOLDER}/Quicken ]]; then
-  printf "\n${BRIGHT_MAGENTA}Backing up Quicken files to Dropbox${NC}\n"
-  unison ${DATA_ROOT_FOLDER} ${DROPBOX_FOLDER} -path Quicken -force ${DATA_ROOT_FOLDER} -auto -batch
-fi
-
-"${SCRIPT_DIR}"/makeIndexableCopyOfObsidianMdFilesForDropbox.sh
-
-if [[ -d ${DATA_ROOT_FOLDER}/Obsidian && -d ${DROPBOX_FOLDER}/Obsidian ]]; then
-  printf "\n${BRIGHT_MAGENTA}Backing up Obsidian files to Dropbox${NC}\n"
-  unison ${DATA_ROOT_FOLDER} ${DROPBOX_FOLDER} -path Obsidian -force ${DATA_ROOT_FOLDER} -auto -batch -ignore "Name .git"
-fi
-
 if [[ -e /etc/sudoers.d/"${USER}" ]]; then
   cp /etc/sudoers.d/"${USER}" "${SCRIPT_DIR}"/../sudoers.d/
 fi
 
+DROPBOX_FOLDER=/mnt/d/Dropbox
+
 if [[ -d ${DROPBOX_FOLDER}/BACKUPS/WSL2-Linux ]]; then
-  printf "\n${YELLOW}Consider running backupWSL too!${NC}\n"
+  printf "\n${YELLOW}Remember to run backupToDropbox regularly too!${NC}\n"
 fi
 
 if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
