@@ -40,19 +40,6 @@ printf "\n\t${YELLOW}Windows${NC}\n"
 mkdir -p "${OUTPUT_PATH}/windows"
 godot  --headless --quiet --path "${PROJECT_PATH}" --export-release 'Win' "${OUTPUT_PATH}/windows/${GAME_NAME}.exe"
 
-printf "\n${YELLOW}Packaging Binary Release Files${NC}"
-mkdir -p "${OUTPUT_PATH}/release"
-
-printf "\n\t${YELLOW}Linux${NC}\n"
-cd "${OUTPUT_PATH}/linux" || exit
-tar -cvf Space-Game-Linux-Binary.tar ./*
-gzip -9 Space-Game-Linux-Binary.tar
-mv Space-Game-Linux-Binary.tar.gz "${OUTPUT_PATH}/release"
-
-printf "\n\t${YELLOW}Windows${NC}\n"
-cd "${OUTPUT_PATH}/windows" || exit
-zip -9 Space-Game-Windows-Binary.zip ./*
-mv Space-Game-Windows-Binary.zip "${OUTPUT_PATH}/release"
 
 printf "\n${YELLOW}Cache Busting${NC}\n"
 # Most web servers and browsers are really bad about caching too aggressively when it comes to binary files
@@ -106,8 +93,24 @@ do
   fi
 done
 
+
+printf "\n${YELLOW}Packaging Binary Release Files${NC}"
+mkdir -p "${OUTPUT_PATH}/web/release"
+
+printf "\n\t${YELLOW}Linux${NC}\n"
+cd "${OUTPUT_PATH}/linux" || exit
+tar -cvf Space-Game-Linux-Binary.tar ./*
+gzip -9 Space-Game-Linux-Binary.tar
+mv Space-Game-Linux-Binary.tar.gz "${OUTPUT_PATH}/web/release"
+
+printf "\n\t${YELLOW}Windows${NC}\n"
+cd "${OUTPUT_PATH}/windows" || exit
+zip -9 Space-Game-Windows-Binary.zip ./*
+mv Space-Game-Windows-Binary.zip "${OUTPUT_PATH}/web/release"
+
+
 printf "\n${YELLOW}Syncing Builds to Server${NC}"
-printf "\n\t${YELLOW}Syncing Web Build${NC}\n"
+printf "\n\t${YELLOW}Syncing Web Content${NC}\n"
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=("${OUTPUT_PATH}")
 UNISON_ARGUMENTS+=("ssh://${REMOTE_IP}//home/chrisl8/${GAME_NAME}")
@@ -124,5 +127,21 @@ cp "${PROJECT_PATH}/export-helpers/server/run-space-game-server.sh" "${OUTPUT_PA
 UNISON_ARGUMENTS+=(-path linux)
 unison "${UNISON_ARGUMENTS[@]}" # -batch
 
-printf "\n${YELLOW}Restarting Servers${NC}\n"
+printf "\n${YELLOW}Restarting Server${NC}\n"
 ssh "${REMOTE_IP}" 'PATH=~/.nvm/current/bin:$PATH pm2 restart "Space Game"'
+
+ONEDRIVE_PATH=/mnt/c/Users/chris/OneDrive/Pandorica/SpaceGame
+if [[ -d ${ONEDRIVE_PATH} ]];then
+  printf "\n${YELLOW}Syncing Onedrive Copy${NC}\n"
+  UNISON_ARGUMENTS=()
+  UNISON_ARGUMENTS+=("${OUTPUT_PATH}/windows")
+  UNISON_ARGUMENTS+=("${ONEDRIVE_PATH}")
+  UNISON_ARGUMENTS+=(-force "${OUTPUT_PATH}/windows")
+  UNISON_ARGUMENTS+=(-perms 0)
+  UNISON_ARGUMENTS+=(-dontchmod)
+  UNISON_ARGUMENTS+=(-rsrc false)
+  UNISON_ARGUMENTS+=(-links ignore)
+  UNISON_ARGUMENTS+=(-auto)
+  UNISON_ARGUMENTS+=(-batch)
+  unison "${UNISON_ARGUMENTS[@]}" # -batch
+fi
