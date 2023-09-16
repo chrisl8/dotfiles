@@ -33,7 +33,7 @@ ZLE_RPROMPT_INDENT=1
 # Use http://nerdfonts.com/?set=nf-custom-#cheat-sheet to find icon codes to use
 
 if [[ ${PUTTY_SESSION} == "True" ]];then
-# TODO: This won't actually accomplish anything, but it is here to transfor to a new .p10k.zsh file for putty someday, if I ever use it.
+# TODO: This won't actually accomplish anything, but it is here to transfer to a new .p10k.zsh file for putty someday, if I ever use it.
 
 # For some reason Nerd Font glyphs in Windows via puTTY don't all work.
 # So I found some that looked similar but worked and substituted.
