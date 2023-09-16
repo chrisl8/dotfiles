@@ -1,11 +1,27 @@
 #!/bin/bash
 # shellcheck disable=SC2059
 
+# Using --fast-web command line argument will skip all steps not strictly required for a new web deploy.
+# This can speed up testing.
+RAPID_DEPLOY=false
+
+while test $# -gt 0
+do
+        case "$1" in
+                --fast-web) RAPID_DEPLOY=true
+                ;;
+        *) echo "Invalid argument"
+                exit
+                ;;
+        esac
+        shift
+done
+
 GAME_NAME=space-game
+PM2_TITLE="Space Game"
 REMOTE_IP=voidshipephemeral.space
 PROJECT_PATH=/mnt/c/Dev/space-game
 OUTPUT_PATH=${HOME}/${GAME_NAME}
-
 
 YELLOW='\033[1;33m'
 NC='\033[0m' # NoColor
@@ -35,11 +51,12 @@ godot --headless --quiet --path "${PROJECT_PATH}" --export-release 'Web' "${OUTP
 printf "\n\t${YELLOW}Linux${NC}\n"
 mkdir -p "${OUTPUT_PATH}/linux"
 godot  --headless --quiet --path "${PROJECT_PATH}" --export-release 'Linux' "${OUTPUT_PATH}/linux/${GAME_NAME}.x86_64"
-printf "\n\t${YELLOW}Windows${NC}\n"
-# This isn't actually used anywhere, but I like having it built. In theory I could like slap a shortcut to it on my desktop, or upload it to Itch.io
-mkdir -p "${OUTPUT_PATH}/windows"
-godot  --headless --quiet --path "${PROJECT_PATH}" --export-release 'Win' "${OUTPUT_PATH}/windows/${GAME_NAME}.exe"
-
+if [[ "${RAPID_DEPLOY}" == "false" ]]; then
+  printf "\n\t${YELLOW}Windows${NC}\n"
+  # This isn't actually used anywhere, but I like having it built. In theory I could like slap a shortcut to it on my desktop, or upload it to Itch.io
+  mkdir -p "${OUTPUT_PATH}/windows"
+  godot  --headless --quiet --path "${PROJECT_PATH}" --export-release 'Win' "${OUTPUT_PATH}/windows/${GAME_NAME}.exe"
+fi
 
 printf "\n${YELLOW}Cache Busting${NC}\n"
 # Most web servers and browsers are really bad about caching too aggressively when it comes to binary files
@@ -53,6 +70,13 @@ rm "${GAME_NAME}.png"
 # as it is never internally referenced.
 # See: https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html
 mv "${GAME_NAME}.html" index.html
+# Use my own icons
+cp "${PROJECT_PATH}/export-helpers/web/icons/favicon-128x128.png" "${GAME_NAME}.icon.png"
+cp "${PROJECT_PATH}/export-helpers/web/icons/favicon-180x180.png" "${GAME_NAME}.apple-touch-icon.png"
+# Godot generates some javascript to overwrite the icon which isn't documented,
+# so I'm just commenting it out for now.
+# There is probably a way to leverage it instead of thwart it.
+sed -i -- "s/GodotDisplay.window_icon =/\/\/GodotDisplay.window_icon =/g" "${GAME_NAME}.js"
 # Some other files must use the same name as the .wasm file, so we cache that
 WASM_FILE_CHECK_SUM=$(sha224sum "${GAME_NAME}.wasm" | awk '{ print $1 }')
 
@@ -93,21 +117,21 @@ do
   fi
 done
 
+if [[ "${RAPID_DEPLOY}" == "false" ]]; then
+  printf "\n${YELLOW}Packaging Binary Release Files${NC}"
+  mkdir -p "${OUTPUT_PATH}/web/release"
 
-printf "\n${YELLOW}Packaging Binary Release Files${NC}"
-mkdir -p "${OUTPUT_PATH}/web/release"
+  printf "\n\t${YELLOW}Linux${NC}\n"
+  cd "${OUTPUT_PATH}/linux" || exit
+  tar -cvf Space-Game-Linux-Binary.tar ./*
+  gzip -9 Space-Game-Linux-Binary.tar
+  mv Space-Game-Linux-Binary.tar.gz "${OUTPUT_PATH}/web/release"
 
-printf "\n\t${YELLOW}Linux${NC}\n"
-cd "${OUTPUT_PATH}/linux" || exit
-tar -cvf Space-Game-Linux-Binary.tar ./*
-gzip -9 Space-Game-Linux-Binary.tar
-mv Space-Game-Linux-Binary.tar.gz "${OUTPUT_PATH}/web/release"
-
-printf "\n\t${YELLOW}Windows${NC}\n"
-cd "${OUTPUT_PATH}/windows" || exit
-zip -9 Space-Game-Windows-Binary.zip ./*
-mv Space-Game-Windows-Binary.zip "${OUTPUT_PATH}/web/release"
-
+  printf "\n\t${YELLOW}Windows${NC}\n"
+  cd "${OUTPUT_PATH}/windows" || exit
+  zip -9 Space-Game-Windows-Binary.zip ./*
+  mv Space-Game-Windows-Binary.zip "${OUTPUT_PATH}/web/release"
+fi
 
 printf "\n${YELLOW}Syncing Builds to Server${NC}"
 printf "\n\t${YELLOW}Syncing Web Content${NC}\n"
@@ -122,26 +146,28 @@ unison "${UNISON_ARGUMENTS[@]}" # -batch
 
 printf "\n\t${YELLOW}Syncing Linux Binary (for Server)${NC}\n"
 # Copy in the run script for the Linux server
-cp "${PROJECT_PATH}/export-helpers/server/run-space-game-server.sh" "${OUTPUT_PATH}/linux"
+cp "${PROJECT_PATH}/export-helpers/server/run-server.sh" "${OUTPUT_PATH}/linux"
 
 UNISON_ARGUMENTS+=(-path linux)
 unison "${UNISON_ARGUMENTS[@]}" # -batch
 
 printf "\n${YELLOW}Restarting Server${NC}\n"
-ssh "${REMOTE_IP}" 'PATH=~/.nvm/current/bin:$PATH pm2 restart "Space Game"'
+ssh "${REMOTE_IP}" "PATH=~/.nvm/current/bin:\$PATH pm2 restart \"${PM2_TITLE}\""
 
-ONEDRIVE_PATH=/mnt/c/Users/chris/OneDrive/Pandorica/SpaceGame
-if [[ -d ${ONEDRIVE_PATH} ]];then
-  printf "\n${YELLOW}Syncing Onedrive Copy${NC}\n"
-  UNISON_ARGUMENTS=()
-  UNISON_ARGUMENTS+=("${OUTPUT_PATH}/windows")
-  UNISON_ARGUMENTS+=("${ONEDRIVE_PATH}")
-  UNISON_ARGUMENTS+=(-force "${OUTPUT_PATH}/windows")
-  UNISON_ARGUMENTS+=(-perms 0)
-  UNISON_ARGUMENTS+=(-dontchmod)
-  UNISON_ARGUMENTS+=(-rsrc false)
-  UNISON_ARGUMENTS+=(-links ignore)
-  UNISON_ARGUMENTS+=(-auto)
-  UNISON_ARGUMENTS+=(-batch)
-  unison "${UNISON_ARGUMENTS[@]}" # -batch
+if [[ "${RAPID_DEPLOY}" == "false" ]]; then
+  ONEDRIVE_PATH=/mnt/c/Users/chris/OneDrive/Pandorica/SpaceGame
+  if [[ -d ${ONEDRIVE_PATH} ]];then
+    printf "\n${YELLOW}Syncing Onedrive Copy${NC}\n"
+    UNISON_ARGUMENTS=()
+    UNISON_ARGUMENTS+=("${OUTPUT_PATH}/windows")
+    UNISON_ARGUMENTS+=("${ONEDRIVE_PATH}")
+    UNISON_ARGUMENTS+=(-force "${OUTPUT_PATH}/windows")
+    UNISON_ARGUMENTS+=(-perms 0)
+    UNISON_ARGUMENTS+=(-dontchmod)
+    UNISON_ARGUMENTS+=(-rsrc false)
+    UNISON_ARGUMENTS+=(-links ignore)
+    UNISON_ARGUMENTS+=(-auto)
+    UNISON_ARGUMENTS+=(-batch)
+    unison "${UNISON_ARGUMENTS[@]}" # -batch
+  fi
 fi
