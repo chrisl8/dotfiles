@@ -26,22 +26,39 @@ OUTPUT_PATH=${HOME}/${GAME_NAME}
 YELLOW='\033[1;33m'
 NC='\033[0m' # NoColor
 
-# NOTES:
-# This script assumes that you have put the Godot engine somewhere in the path and linked it to the name godot
-# cd ~/bin
-# wget https://github.com/godotengine/godot/releases/download/4.1.1-stable/Godot_v4.1.1-stable_linux.x86_64.zip
-# unzip Godot_v4.1.1-stable_linux.x86_64.zip
-# chmod +x Godot_v4.1.1-stable_linux.x86_64
-# ln -s Godot_v4.1.1-stable_linux.x86_64 godot
-
-# And that you have downloaded the export templates
-# cd ~/.local/share/godot/export_templates
-# wget https://github.com/godotengine/godot/releases/download/4.1.1-stable/Godot_v4.1.1-stable_export_templates.tpz
-# unzip Godot_v4.1.1-stable_export_templates.tpz
-# mv templates 4.1.1.stable
+GODOT_VERSION=4.1.2
 
 printf "\n${YELLOW}Installing Required Dependencies${NC}\n"
 type -p zip >/dev/null || (sudo apt update && sudo apt install zip -y)
+
+if ! (command -v godot >/dev/null) || ! (godot --version | grep ${GODOT_VERSION} >/dev/null); then
+  printf "\n${YELLOW}Downloading Godot ${GODOT_VERSION}${NC}\n"
+  cd "${HOME}/bin" || exit
+  wget "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+  unzip Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
+  rm Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
+  chmod +x Godot_v${GODOT_VERSION}-stable_linux.x86_64
+  if [[ -e godot ]]; then
+    rm godot
+  fi
+  ln -s Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
+fi
+
+if ! (command -v godot >/dev/null); then
+  PATH="${HOME}/bin":${PATH}
+fi
+
+if ! [[ -e ${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable ]]; then
+  printf "\n${YELLOW}Downloading Godot ${GODOT_VERSION} Export Templates${NC}\n"
+  if ! [[ -e ${HOME}/.local/share/godot/export_templates ]]; then
+    mkdir -p "${HOME}/.local/share/godot/export_templates"
+  fi
+  cd "${HOME}/.local/share/godot/export_templates" || exit
+  wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+  unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+  rm Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+  mv templates ${GODOT_VERSION}.stable
+fi
 
 printf "\n${YELLOW}Building Godot Release Bundles${NC}"
 rm -rf "${OUTPUT_PATH}"
