@@ -8,7 +8,7 @@ NEW_SIZE_SLUG=""
 while test $# -gt 0
 do
         case "$1" in
-                --tiny) NEW_SIZE_SLUG=s-1vcpu-512mb
+                --tiny) NEW_SIZE_SLUG=s-1vcpu-512mb-10gb
                 ;;
                 --small) NEW_SIZE_SLUG=s-1vcpu-1gb
                 ;;
@@ -20,7 +20,7 @@ done
 
 if [[ ${NEW_SIZE_SLUG} = "" ]];then
   echo "You must supply a size as an argument:"
-  echo "--tyny \$4 - 512MB 1 vCPU"
+  echo "--tiny \$4 - 512MB 1 vCPU"
   echo "--small \$6 - 1GB 1 vCPU"
   echo "--large \$18 - 2GB 2 vCPU"
   exit
