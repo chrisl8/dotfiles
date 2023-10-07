@@ -47,6 +47,8 @@ UNISON_ARGUMENTS+=(-dontchmod)
 UNISON_ARGUMENTS+=(-rsrc false)
 UNISON_ARGUMENTS+=(-auto)
 UNISON_ARGUMENTS+=(-links ignore)
+UNISON_ARGUMENTS+=(-ignore "Name Work/idat-cm-folder/dumper.py") # This file updates EVERY time, so excluding it
+UNISON_ARGUMENTS+=(-ignore "Name Work/idat-cm-folder/Dumper.py") # This file updates EVERY time, so excluding it
 UNISON_ARGUMENTS+=(-ignore "Name Work/NodeBinary")
 UNISON_ARGUMENTS+=(-ignore "Name .vscode-server")
 UNISON_ARGUMENTS+=(-ignore "Name node_modules")
@@ -123,6 +125,7 @@ UNISON_ARGUMENTS+=(-ignore "Name .vscode-server")
 UNISON_ARGUMENTS+=(-ignore "Name node_modules")
 UNISON_ARGUMENTS+=(-ignore "Name .idea")
 UNISON_ARGUMENTS+=(-ignore "Name .git") # If I exclude this, I lose git history for non-github repositories, but this is MOST of the churn, so doing it anyway.
+UNISON_ARGUMENTS+=(-ignore "Name .godot") # Too much data nd churn here
 UNISON_ARGUMENTS+=(-batch) # Don't ask, just do it. This is a backup.
 
 if [[ -d "${ROOT_PATH}/${FOLDER_TO_BACKUP}" ]]; then
