@@ -18,7 +18,6 @@ do
 done
 
 GAME_NAME=space-game
-PM2_TITLE="Space Game"
 REMOTE_IP=voidshipephemeral.space
 PROJECT_PATH=/mnt/c/Dev/space-game
 OUTPUT_PATH=${HOME}/${GAME_NAME}
@@ -162,14 +161,16 @@ UNISON_ARGUMENTS+=(-batch)
 unison "${UNISON_ARGUMENTS[@]}" # -batch
 
 printf "\n\t${YELLOW}Syncing Linux Binary (for Server)${NC}\n"
-# Copy in the run script for the Linux server
+# Copy in the scripts for the Linux server
 cp "${PROJECT_PATH}/export-helpers/server/run-server.sh" "${OUTPUT_PATH}/linux"
+cp "${PROJECT_PATH}/export-helpers/server/restart-server.sh" "${OUTPUT_PATH}/linux"
 
 UNISON_ARGUMENTS+=(-path linux)
 unison "${UNISON_ARGUMENTS[@]}" # -batch
 
 printf "\n${YELLOW}Restarting Server${NC}\n"
-ssh "${REMOTE_IP}" "PATH=~/.nvm/current/bin:\$PATH pm2 restart \"${PM2_TITLE}\""
+# shellcheck disable=SC2029
+ssh "${REMOTE_IP}" "cd ${OUTPUT_PATH}/linux;./restart-server.sh"
 
 if [[ "${RAPID_DEPLOY}" == "false" ]]; then
   ONEDRIVE_PATH=/mnt/c/Users/chris/OneDrive/Pandorica/SpaceGame
