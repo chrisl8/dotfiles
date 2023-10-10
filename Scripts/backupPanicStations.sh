@@ -1,4 +1,5 @@
 #!/bin/bash
+# This is no longer used, as I now perform a regular full backup of WSL2 Home
 
 set -e
 

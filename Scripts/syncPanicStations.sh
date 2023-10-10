@@ -1,5 +1,6 @@
 #!/bin/bash
-backupPanicStations.sh
+
+set -e
 
 REMOTE_IP=PanicStations
 
@@ -13,6 +14,7 @@ UNISON_ARGUMENTS+=(/home/chrisl8/Dev/PanicStations)
 UNISON_ARGUMENTS+=(ssh://"${REMOTE_IP}"//home/chrisl8/PanicStations)
 UNISON_ARGUMENTS+=(-ignore "Path node_modules") # These are different on Pi and x86
 UNISON_ARGUMENTS+=(-ignore "Path .idea")
+# CAREFUL: If you comment this out on two sync scripts you will overwrite someone's config!
 UNISON_ARGUMENTS+=(-ignore "Path settings.json5")
 UNISON_ARGUMENTS+=(-ignore "Path gamePlayStats.sqlite")
 UNISON_ARGUMENTS+=(-ignore "Path server.sqlite")
