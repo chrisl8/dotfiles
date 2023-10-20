@@ -145,8 +145,13 @@ if [[ -d ${DROPBOX_FOLDER}/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Remember to run backupToDropbox regularly too!${NC}\n"
 fi
 
-if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
-  printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
+if (command -v wsl.exe); then
+  if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
+    printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
+  else
+    printf "\n${YELLOW}You may want to update Chocolatey packages. Run Powershell as Admin and run:${NC}"
+    printf "choco upgrade all -y"
+  fi
 fi
 
 if [ "$NODE_VERSION" != "$NODE_VERSION_NEW" ]; then
