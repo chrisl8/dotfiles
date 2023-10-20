@@ -93,7 +93,7 @@ fi
 if [[ -d "${HOME}"/.oh-my-zsh ]] && ! [[ -d "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
   LOGOUT=true
   printf "\n${BRIGHT_MAGENTA}Installing Powerlevel10k${NC}\n"
-  gh repo clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k
+  gh repo clone https://github.com/romkatv/powerlevel10k.git "${HOME}"/.oh-my-zsh/custom/themes/powerlevel10k -- --depth=1
 fi
 
 cd || exit 1
@@ -204,5 +204,3 @@ git config --global core.autocrlf false
 printf "\n${YELLOW}NOTE: This script installs, but may or may not update things.${NC}\n"
 printf "\n${LIGHT_CYAN}You can run this again and again, in case there is something new to install,${NC}\n"
 printf "\n${LIGHT_CYAN}but consider running updateAllTheThings.sh to update things too!${NC}\n"
-
-# TODO: Set up .zshenv to use pi32 or pi64 bin folders for Pi
