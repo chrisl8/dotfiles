@@ -9,6 +9,5 @@ UNISON_ARGUMENTS+=(-ignore "Path .idea")
 UNISON_ARGUMENTS+=(-auto)
 
 if unison "${UNISON_ARGUMENTS[@]}"; then
-  unison "${UNISON_ARGUMENTS[@]}"
-  #unison "${UNISON_ARGUMENTS[@]}" -batch -repeat watch
+  unison "${UNISON_ARGUMENTS[@]}" -batch -repeat watch
 fi
