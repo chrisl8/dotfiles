@@ -149,8 +149,8 @@ if (command -v wsl.exe); then
   if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
     printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
   else
-    printf "\n${YELLOW}You may want to update Chocolatey packages. Run Powershell as Admin and run:${NC}"
-    printf "choco upgrade all -y"
+    printf "\n${YELLOW}You may want to update Chocolatey packages. Run Powershell as Admin and run:${NC}\n"
+    printf "choco upgrade all -y\n"
   fi
 fi
 
