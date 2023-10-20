@@ -1,62 +1,148 @@
 #!/bin/bash
 # shellcheck disable=SC2059
 
+GODOT_VERSION=""
+GAME_NAME=space-game
+REMOTE_HOST=""
+PROJECT_PATH=""
+CLOUD_DRIVE_PATH=""
+
 # Using --fast-web command line argument will skip all steps not strictly required for a new web deploy.
 # This can speed up testing.
 RAPID_DEPLOY=false
 
+print_usage() {
+  echo "Prerequisites:"
+  echo "1. You must have SSH access via public key to the remote host."
+  echo "2. Your remote host must have unison installed (sudo apt install unison)"
+  echo ""
+  echo "Usage:"
+  echo "You MUST provide the following arguments on the command line:"
+  echo "The Godot version to use, in this exact format:"
+  echo "--godot-version 4.1.2-stable"
+  echo "or"
+  echo "--godot-version 4.2-beta1"
+  echo "Be sure to include the -stable or -beta1 on the end just like the release."
+  echo ""
+  echo "The folder where your Godot code project is at:"
+  echo "--project-path /mnt/c/Dev/space-game"
+  echo ""
+  echo "The remote host to deploy your code to:"
+  echo "--remote-host server.example.com"
+  echo "An IP address also works."
+  echo ""
+  echo ""
+  echo "You MAY also include the following options:"
+  echo "The default game name is space-game but you can use your own, but your must set up folders and such with that name."
+  echo "--game-name space-game"
+  echo ""
+  echo "You an also supply a 'local' path to drop Linux and Windows binaries into. I use this to share them with friends. It is not required."
+  echo "--cloud-drive-path /mnt/c/Users/me/Dropbox/SpaceGame"
+  echo ""
+  echo "Examples:"
+  echo "deploySpaceGame.sh --godot-version 4.1.2-stable --project-path /mnt/c/Dev/space-game --remote-host server.example.com"
+}
+
+if [[ $# -eq 0 ]];then
+  print_usage
+  exit
+fi
+
 while test $# -gt 0
 do
         case "$1" in
-                --fast-web) RAPID_DEPLOY=true
-                ;;
-        *) echo "Invalid argument"
-                exit
-                ;;
+          --fast-web)
+            RAPID_DEPLOY=true
+            ;;
+          --godot-version)
+            shift
+            GODOT_VERSION="$1"
+            ;;
+          --remote-host)
+            shift
+            REMOTE_HOST="$1"
+            ;;
+          --game-name)
+            shift
+            GAME_NAME="$1"
+            ;;
+          --project-path)
+            shift
+            PROJECT_PATH="$1"
+            ;;
+          --cloud-drive-path)
+            shift
+            CLOUD_DRIVE_PATH="$1"
+            ;;
+          *)
+            echo "Invalid argument"
+            print_usage
+            exit
+            ;;
         esac
         shift
 done
 
-GAME_NAME=space-game
-REMOTE_IP=voidshipephemeral.space
-PROJECT_PATH=/mnt/c/Dev/space-game
+if [[ ${GAME_NAME} == "" ]] || [[ ${REMOTE_HOST} == "" ]] || [[ ${PROJECT_PATH} == "" ]] || [[ ${GODOT_VERSION} == "" ]];then
+  print_usage
+  exit
+fi
+
+# Account for beta releases being in
+# https://github.com/godotengine/godot-builds/releases/download/
+# instead of
+# https://github.com/godotengine/godot/releases/download/
+DOWNLOAD_FOLDER_SUFFIX=""
+if [[ ${GODOT_VERSION} == *"beta"* ]];then
+  DOWNLOAD_FOLDER_SUFFIX="-builds"
+fi
+
 OUTPUT_PATH=${HOME}/${GAME_NAME}
+
+# godot --version uses a . instead of a - in the version number, even though
+# the download file uses a -
+# So we need this to check the current version number,
+# and also for naming the export template folder which must use a . instead of a -
+GODOT_VERSION_DOT=$(echo "${GODOT_VERSION}" | tr - .)
 
 YELLOW='\033[1;33m'
 NC='\033[0m' # NoColor
 
-GODOT_VERSION=4.1.2
-
 printf "\n${YELLOW}Installing Required Dependencies${NC}\n"
 type -p zip >/dev/null || (sudo apt update && sudo apt install zip -y)
+type -p unison >/dev/null || (sudo apt update && sudo apt install unison -y)
 
-if ! (command -v godot >/dev/null) || ! (godot --version | grep ${GODOT_VERSION} >/dev/null); then
-  printf "\n${YELLOW}Downloading Godot ${GODOT_VERSION}${NC}\n"
+if ! (command -v godot >/dev/null) || ! (godot --version | grep "${GODOT_VERSION_DOT}" >/dev/null); then
   cd "${HOME}/bin" || exit
-  wget "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
-  unzip Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
-  rm Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
-  chmod +x Godot_v${GODOT_VERSION}-stable_linux.x86_64
+  if ! [[ -f "Godot_v${GODOT_VERSION}_linux.x86_64" ]]; then
+    printf "\n${YELLOW}Downloading Godot ${GODOT_VERSION}${NC}\n"
+    wget "https://github.com/godotengine/godot${DOWNLOAD_FOLDER_SUFFIX}/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+    unzip "Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+    rm "Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+    chmod +x "Godot_v${GODOT_VERSION}_linux.x86_64"
+  else
+    printf "\n${YELLOW}Swapping to Godot ${GODOT_VERSION}${NC}\n"
+  fi
   if [[ -e godot ]]; then
     rm godot
   fi
-  ln -s Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
+  ln -s "Godot_v${GODOT_VERSION}_linux.x86_64" godot
 fi
 
 if ! (command -v godot >/dev/null); then
   PATH="${HOME}/bin":${PATH}
 fi
 
-if ! [[ -e ${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable ]]; then
+if ! [[ -e ${HOME}/.local/share/godot/export_templates/${GODOT_VERSION_DOT} ]]; then
   printf "\n${YELLOW}Downloading Godot ${GODOT_VERSION} Export Templates${NC}\n"
   if ! [[ -e ${HOME}/.local/share/godot/export_templates ]]; then
     mkdir -p "${HOME}/.local/share/godot/export_templates"
   fi
   cd "${HOME}/.local/share/godot/export_templates" || exit
-  wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
-  unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz
-  rm Godot_v${GODOT_VERSION}-stable_export_templates.tpz
-  mv templates ${GODOT_VERSION}.stable
+  wget "https://github.com/godotengine/godot${DOWNLOAD_FOLDER_SUFFIX}/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz"
+  unzip "Godot_v${GODOT_VERSION}_export_templates.tpz"
+  rm "Godot_v${GODOT_VERSION}_export_templates.tpz"
+  mv templates "${GODOT_VERSION_DOT}"
 fi
 
 printf "\n${YELLOW}Building Godot Release Bundles${NC}"
@@ -69,7 +155,8 @@ mkdir -p "${OUTPUT_PATH}/linux"
 godot  --headless --quiet --path "${PROJECT_PATH}" --export-release 'Linux' "${OUTPUT_PATH}/linux/${GAME_NAME}.x86_64"
 if [[ "${RAPID_DEPLOY}" == "false" ]]; then
   printf "\n\t${YELLOW}Windows${NC}\n"
-  # This isn't actually used anywhere, but I like having it built. In theory I could like slap a shortcut to it on my desktop, or upload it to Itch.io
+  # This is not required, as the server is Linux and the clients are intended to be web based,
+  # but the game works fine as a Windows client also which I often run and share with friends
   mkdir -p "${OUTPUT_PATH}/windows"
   godot  --headless --quiet --path "${PROJECT_PATH}" --export-release 'Win' "${OUTPUT_PATH}/windows/${GAME_NAME}.exe"
 fi
@@ -153,7 +240,7 @@ printf "\n${YELLOW}Syncing Builds to Server${NC}"
 printf "\n\t${YELLOW}Syncing Web Content${NC}\n"
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=("${OUTPUT_PATH}")
-UNISON_ARGUMENTS+=("ssh://${REMOTE_IP}//home/chrisl8/${GAME_NAME}")
+UNISON_ARGUMENTS+=("ssh://${REMOTE_HOST}//home/chrisl8/${GAME_NAME}")
 UNISON_ARGUMENTS+=(-force "${OUTPUT_PATH}")
 UNISON_ARGUMENTS+=(-path web)
 UNISON_ARGUMENTS+=(-auto)
@@ -170,22 +257,19 @@ unison "${UNISON_ARGUMENTS[@]}" # -batch
 
 printf "\n${YELLOW}Restarting Server${NC}\n"
 # shellcheck disable=SC2029
-ssh "${REMOTE_IP}" "cd ${OUTPUT_PATH}/linux;./restart-server.sh"
+ssh "${REMOTE_HOST}" "cd ${OUTPUT_PATH}/linux;./restart-server.sh"
 
-if [[ "${RAPID_DEPLOY}" == "false" ]]; then
-  ONEDRIVE_PATH=/mnt/c/Users/chris/OneDrive/Pandorica/SpaceGame
-  if [[ -d ${ONEDRIVE_PATH} ]];then
-    printf "\n${YELLOW}Syncing Onedrive Copy${NC}\n"
-    UNISON_ARGUMENTS=()
-    UNISON_ARGUMENTS+=("${OUTPUT_PATH}/windows")
-    UNISON_ARGUMENTS+=("${ONEDRIVE_PATH}")
-    UNISON_ARGUMENTS+=(-force "${OUTPUT_PATH}/windows")
-    UNISON_ARGUMENTS+=(-perms 0)
-    UNISON_ARGUMENTS+=(-dontchmod)
-    UNISON_ARGUMENTS+=(-rsrc false)
-    UNISON_ARGUMENTS+=(-links ignore)
-    UNISON_ARGUMENTS+=(-auto)
-    UNISON_ARGUMENTS+=(-batch)
-    unison "${UNISON_ARGUMENTS[@]}" # -batch
-  fi
+if [[ "${RAPID_DEPLOY}" == "false" ]] && ! [[ "${CLOUD_DRIVE_PATH}" == "" ]] && [[ -d ${CLOUD_DRIVE_PATH} ]]; then
+  printf "\n${YELLOW}Syncing Cloud Copy${NC}\n"
+  UNISON_ARGUMENTS=()
+  UNISON_ARGUMENTS+=("${OUTPUT_PATH}/windows")
+  UNISON_ARGUMENTS+=("${CLOUD_DRIVE_PATH}")
+  UNISON_ARGUMENTS+=(-force "${OUTPUT_PATH}/windows")
+  UNISON_ARGUMENTS+=(-perms 0)
+  UNISON_ARGUMENTS+=(-dontchmod)
+  UNISON_ARGUMENTS+=(-rsrc false)
+  UNISON_ARGUMENTS+=(-links ignore)
+  UNISON_ARGUMENTS+=(-auto)
+  UNISON_ARGUMENTS+=(-batch)
+  unison "${UNISON_ARGUMENTS[@]}" # -batch
 fi
