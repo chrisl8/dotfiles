@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 REMOTE_IP=TARDIS-Console
 
 scp "${REMOTE_IP}":/home/chrisl8/PanicStations/gamePlayStats.sqlite /mnt/d/Dropbox/BACKUPS/TardisConsole
