@@ -149,15 +149,15 @@ source $ZSH/oh-my-zsh.sh
 set -o vi
 
 # Keychain for SSH
-if [[ -e ~/.ssh/id_rsa ]]; then
-  keychain -q id_rsa
-fi
-if [[ -e ~/.ssh/id_ed25519 ]]; then
-  keychain -q id_ed25519
-fi
-if [[ -e ~/.keychain/`uname -n`-sh ]]; then
-  source ~/.keychain/`uname -n`-sh
-fi
+#if [[ -e ~/.ssh/id_rsa ]]; then
+#  keychain -q id_rsa
+#fi
+#if [[ -e ~/.ssh/id_ed25519 ]]; then
+#  keychain -q id_ed25519
+#fi
+#if [[ -e ~/.keychain/`uname -n`-sh ]]; then
+#  source ~/.keychain/`uname -n`-sh
+#fi
 
 export EDITOR=vim
 export VISUAL=vim
