@@ -151,14 +151,15 @@ DROPBOX_FOLDER=/mnt/d/Dropbox
 
 if [[ -d ${DROPBOX_FOLDER}/BACKUPS/WSL2-Linux ]]; then
   printf "\n${YELLOW}Remember to run backupToDropbox regularly too!${NC}\n"
+  printf "backupToDropbox.sh"
 fi
 
 if (command -v wsl.exe > /dev/null); then
   if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
     printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
   else
-    printf "\n${YELLOW}You may want to update Chocolatey packages. Run Powershell as Admin and run:${NC}\n"
-    printf "choco upgrade all -y\n"
+    printf "\n${YELLOW}You may want to update Windows packages too. Run Powershell as Admin and run:${NC}\n"
+    printf "updateAllTheThingsWindows.ps1\n"
   fi
 fi
 
