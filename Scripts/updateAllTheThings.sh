@@ -53,6 +53,13 @@ sudo apt update
 sudo apt -y upgrade
 sudo apt -y autoremove
 
+# NOTE: Only update things that YOU installed via pip.
+# It often breaks things to use pip to install system level packages, as they were probably installed
+# by Ubuntu itself.
+printf "\n${BRIGHT_MAGENTA}Python Updates${NC}\n"
+printf "\n${LIGHTBLUE}Install/Updating Python Packages${NC}\n"
+pip install "gdtoolkit==4.*" --upgrade
+
 PM2_INSTALLED=0
 if (command -v pm2 >/dev/null); then
   PM2_INSTALLED=1
