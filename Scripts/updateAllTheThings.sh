@@ -140,6 +140,7 @@ if (command -v wsl.exe > /dev/null); then
   printf "wsl.exe --update --web-download\n\n"
   wsl.exe --update || true
   wsl.exe --status
+  wsl.exe --version
 fi
 
 if [[ -e /etc/sudoers.d/"${USER}" ]]; then
