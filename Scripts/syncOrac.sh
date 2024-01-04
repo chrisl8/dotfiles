@@ -9,7 +9,7 @@ REMOTE_IP=orac
 
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=(/home/chrisl8/Dev/Orac)
-UNISON_ARGUMENTS+=(ssh://chrisl8@"${REMOTE_IP}"//home/chrisl8/Orac)
+UNISON_ARGUMENTS+=(ssh://"${USER}"@"${REMOTE_IP}"//home/chrisl8/Orac)
 UNISON_ARGUMENTS+=(-ignore "Path node/node_modules") # These are different on Pi and x86
 UNISON_ARGUMENTS+=(-ignore "Path .idea")
 UNISON_ARGUMENTS+=(-ignore "Path website-source")
