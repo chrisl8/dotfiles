@@ -27,7 +27,7 @@ https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/c
 
 Save it somewhere safe.
 
-This is how I perform this install on a new system using said token:  
+This is how I perform this installation on a new system using said token:  
 
 ```shell
 type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
