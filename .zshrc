@@ -192,3 +192,10 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Use Windows ssh.exe in order to have 1Password SSH agent integration
+# and default to my default user instead of the Windows username.
+# TODO: Change or don't do this on Work WSL
+if (command -v wsl.exe > /dev/null); then
+    alias ssh="ssh.exe -l $USER"
+fi
