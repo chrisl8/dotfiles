@@ -1,0 +1,1 @@
+/mnt/c/Dev/space-game/export-helpers/deployGame.sh --godot-version 4.2.1-stable --remote-host voidshipephemeral.space --project-path /mnt/c/Dev/space-game --cloud-drive-path /mnt/c/Users/chris/OneDrive/Pandorica/SpaceGame --build-xr --game-name space-game

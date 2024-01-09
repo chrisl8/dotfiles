@@ -1,0 +1,1 @@
+/mnt/c/Dev/crater-manipulator/export-helpers/deployGame.sh --godot-version 4.2.1-stable --remote-host crater.voidshipephemeral.space --project-path /mnt/c/Dev/crater-manipulator --cloud-drive-path /mnt/c/Users/chris/OneDrive/Pandorica/CraterManipulator --game-name crater-manipulator
