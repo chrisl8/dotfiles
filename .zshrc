@@ -195,7 +195,6 @@ fi
 
 # Use Windows ssh.exe in order to have 1Password SSH agent integration
 # and default to my default user instead of the Windows username.
-# TODO: Change or don't do this on Work WSL
-if (command -v wsl.exe > /dev/null); then
+if [[ -n "$WSL_DISTRO_NAME" && "$(uname -n)" != "KSCDTL01CL5864" ]]; then
     alias ssh="ssh.exe -l $USER"
 fi

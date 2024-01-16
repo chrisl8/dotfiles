@@ -133,7 +133,7 @@ cd "${SCRIPT_DIR}/../node"
 npm ci
 cd "${SCRIPT_DIR}"
 
-if (command -v wsl.exe > /dev/null); then
+if [[ -n "$WSL_DISTRO_NAME" ]]; then
   # https://github.com/microsoft/WSL/issues/8603#issuecomment-1357669697
   printf "\n${BRIGHT_MAGENTA}WSL Updates${NC}\n"
   printf "NOTE: If this just terminates Linux or otherwise fails, you may need to open PowerShell AS ADMINISTRATOR and run:\n"
@@ -156,8 +156,8 @@ if [[ -d ${DROPBOX_FOLDER}/BACKUPS/WSL2-Linux ]]; then
   printf "backupToDropbox.sh"
 fi
 
-if (command -v wsl.exe > /dev/null); then
-  if [[ $(hostname) = "KSCDTCL5864L-01" ]]; then
+if [[ -n "$WSL_DISTRO_NAME" ]]; then
+  if [[ "$(uname -n)" != "KSCDTL01CL5864" ]]; then
     printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
   else
     printf "\n${YELLOW}You may want to update Windows packages too. Run Powershell as Admin and run:${NC}\n"
