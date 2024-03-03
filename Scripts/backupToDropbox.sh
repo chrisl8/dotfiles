@@ -24,10 +24,6 @@ DROPBOX_FOLDER=/mnt/d/Dropbox
 
 DATA_ROOT_FOLDER=/mnt/d
 export DATA_ROOT_FOLDER
-if [[ -d ${DATA_ROOT_FOLDER}/Quicken && -d ${DROPBOX_FOLDER}/Quicken ]]; then
-  printf "\n${BRIGHT_MAGENTA}Backing up Quicken files to Dropbox${NC}\n"
-  unison ${DATA_ROOT_FOLDER} ${DROPBOX_FOLDER} -path Quicken -force ${DATA_ROOT_FOLDER} -auto -batch
-fi
 
 "${SCRIPT_DIR}"/makeIndexableCopyOfObsidianMdFilesForDropbox.sh
 
