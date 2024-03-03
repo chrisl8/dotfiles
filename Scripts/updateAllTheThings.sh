@@ -159,7 +159,7 @@ if [[ -d ${DROPBOX_FOLDER}/BACKUPS/WSL2-Linux ]]; then
 fi
 
 if [[ -n "$WSL_DISTRO_NAME" ]]; then
-  if [[ "$(uname -n)" != "KSCDTL01CL5864" ]]; then
+  if [[ "$(uname -n)" == "KSCDTL01CL5864" ]]; then
     printf "\n${YELLOW}Consider comparing your Windows Terminal version and updating it.${NC}\n"
   else
     printf "\n${YELLOW}You may want to update Windows packages too. Run Powershell as Admin and run:${NC}\n"
