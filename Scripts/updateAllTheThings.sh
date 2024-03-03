@@ -59,7 +59,7 @@ sudo apt -y autoremove
 if (command -v pip >/dev/null) && [[ -e ${HOME}/.local/bin/gdformat ]]; then
   printf "\n${BRIGHT_MAGENTA}Python Updates${NC}\n"
   printf "\n${LIGHTBLUE}Updating PIP${NC}\n"
-  sudo python -m pip install --upgrade pip
+  sudo /usr/bin/python -m pip install --upgrade pip
   printf "\n${LIGHTBLUE}Install/Updating Python Packages${NC}\n"
   pip install "gdtoolkit==4.*" --upgrade
 fi
