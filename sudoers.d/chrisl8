@@ -1,1 +1,1 @@
-chrisl8 ALL = NOPASSWD: /usr/sbin/service mariadb restart, /usr/sbin/service apache2 restart,/usr/sbin/service ssh restart,/usr/bin/apt update,/usr/bin/apt -y upgrade,/usr/bin/apt -y autoremove
+chrisl8 ALL = NOPASSWD: /usr/sbin/service mariadb restart, /usr/sbin/service apache2 restart,/usr/sbin/service ssh restart,/usr/bin/apt update,/usr/bin/apt -y upgrade,/usr/bin/apt -y autoremove,/usr/bin/python -m pip install --upgrade pip
