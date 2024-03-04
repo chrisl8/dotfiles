@@ -22,18 +22,26 @@ function downloadArtifact() {
   if [[ -e "godot_${ARTIFACT_PLATFORM}_current_artifact_id.txt" ]]; then
     CURRENT_ARTIFACT_ID=$(cat "godot_${ARTIFACT_PLATFORM}_current_artifact_id.txt")
     if [[ "$ARTIFACT_ID" == "$CURRENT_ARTIFACT_ID" ]]; then
-      printf "\n${LIGHTBLUE}Latest $ARTIFACT_PLATFORM $ARTIFACT_TYPE already downloaded.${NC}\n"
+      ARTIFACT_SHA=""
+      if [[ -e "godot_${ARTIFACT_PLATFORM}_current_artifact_sha.txt" ]]; then
+          CURRENT_ARTIFACT_SHA=$(cat "godot_${ARTIFACT_PLATFORM}_current_artifact_sha.txt")
+      fi
+      printf "\n${LIGHTBLUE}Latest $ARTIFACT_PLATFORM $ARTIFACT_TYPE $CURRENT_ARTIFACT_SHA already downloaded.${NC}\n"
       return
     fi
   fi
   echo "$ARTIFACT_ID" > "godot_${ARTIFACT_PLATFORM}_current_artifact_id.txt"
+
+  ARTIFACT_SHA=$(curl -sL -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $(op.exe read "op://Private/Github Readonly Token/password")" "https://api.github.com/repos/godotengine/godot/actions/artifacts/$ARTIFACT_ID" | grep sha | cut -d '"' -f 4)
+
+  echo "$ARTIFACT_SHA" > "godot_${ARTIFACT_PLATFORM}_current_artifact_sha.txt"
 
   printf "\n${LIGHTBLUE}Downloading $ARTIFACT_PLATFORM $ARTIFACT_TYPE...${NC}\n"
 
   curl -sL -H "Authorization: Bearer $(op.exe read "op://Private/Github Readonly Token/password")" "https://api.github.com/repos/godotengine/godot/actions/artifacts/$ARTIFACT_ID/zip" --output artifact.zip
 
   if [[ -e artifact.zip ]] && file artifact.zip | grep -q "Zip archive"; then
-    printf "\n${LIGHTBLUE}$ARTIFACT_PLATFORM $ARTIFACT_TYPE $(godot --version) downloaded.${NC}\n"
+    printf "\n${LIGHTBLUE}$ARTIFACT_PLATFORM $ARTIFACT_TYPE $ARTIFACT_SHA downloaded.${NC}\n"
   else
     printf "\n${YELLOW}$ARTIFACT_PLATFORM $ARTIFACT_TYPE failed to download.${NC}\n"
     if [[ -e artifact.zip ]]; then
