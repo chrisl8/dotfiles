@@ -30,6 +30,8 @@ do
         shift
 done
 
+LOCAL=""
+REMOTE=""
 cd "${HOME}/Clone" || exit
 if [[ -d "godot" ]]; then
   cd godot || exit
@@ -38,9 +40,7 @@ if [[ -d "godot" ]]; then
   REMOTE=$(git rev-parse "@{u}")
   if [[ "$LOCAL" != "$REMOTE" ]]; then
     REPO_UPDATED="True"
-    printf "${LIGHTBLUE}Found the following updates:${NC}\n"
-    git --no-pager log --oneline ^"$LOCAL" "$REMOTE"
-    printf "\n"
+    printf "${LIGHTBLUE}Pulling updates for Godot...${NC}\n"
     git pull
   fi
 else
@@ -52,7 +52,11 @@ fi
 if ! [[ -d bin ]] || ! [[ -e bin/godot.linuxbsd.editor.x86_64.llvm ]] || [[ $REPO_UPDATED == "True" ]]; then
   # Docs say using clang is faster, which is what use_llvm=yes does.
   # Docs say using LLD is faster, which is what linker=lld does.
-  scons platform=linuxbsd use_llvm=yes linker=lld
+  printf "${LIGHTBLUE}  Building updated version of Godot...${NC}\n"
+  scons -Q platform=linuxbsd use_llvm=yes linker=lld production=yes
+  printf "${LIGHTBLUE}  Built godot with the following changes:${NC}\n"
+  git --no-pager log --oneline ^"$LOCAL" "$REMOTE"
+  printf "\n"
 else
   printf "${LIGHTBLUE}No updates required.${NC}\n"
 fi

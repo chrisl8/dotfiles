@@ -32,7 +32,7 @@ function downloadArtifact() {
   fi
   echo "$ARTIFACT_ID" > "godot_${ARTIFACT_PLATFORM}_current_artifact_id.txt"
 
-  ARTIFACT_SHA=$(curl -sL -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $(op.exe read "op://Private/Github Readonly Token/password")" "https://api.github.com/repos/godotengine/godot/actions/artifacts/$ARTIFACT_ID" | grep sha | cut -d '"' -f 4)
+  ARTIFACT_SHA=$(curl -sL -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $(op.exe read "op://Private/Github Readonly Token/password")" "https://api.github.com/repos/godotengine/godot/actions/artifacts/$ARTIFACT_ID" | grep sha | cut -d '"' -f 4  | cut -c -9)
 
   echo "$ARTIFACT_SHA" > "godot_${ARTIFACT_PLATFORM}_current_artifact_sha.txt"
 
@@ -51,30 +51,8 @@ function downloadArtifact() {
   fi
 }
 
-# Linux Editor
-ARTIFACT_PLATFORM="Linux"
-ARTIFACT_TYPE="Editor"
-GET_ARTIFACT_ID_PATH="https://godotengine.github.io/godot-commit-artifacts/download/godotengine/godot/master/linux-editor-mono"
-cd "${HOME}/bin" || exit
-downloadArtifact
-if [[ -e artifact.zip ]]; then
-  if [[ -e godot.linuxbsd.editor.x86_64.mono ]]; then
-    rm godot.linuxbsd.editor.x86_64.mono
-  fi
-  if [[ -d GodotSharp ]]; then
-    rm -rf GodotSharp
-  fi
-  unzip -qq artifact.zip
-  chmod +x godot.linuxbsd.editor.x86_64.mono
-  if [[ -e godot ]]; then
-    rm godot
-  fi
-  ln -s godot.linuxbsd.editor.x86_64.mono godot
-  rm artifact.zip
-fi
-
-
 # Export Templates
+ARTIFACT_PLATFORM="Linux"
 VERSION="4.3.dev.mono"
 ALTERNATE_VERSION="4.3.dev"
 ARTIFACT_TYPE="Export Template"
@@ -127,4 +105,27 @@ if [[ -e artifact.zip ]]; then
   cp godot.web.template_release.wasm32.zip web_release.zip
   mv godot.web.template_release.wasm32.zip web_debug.zip
   rm artifact.zip
+fi
+
+# Linux Editor
+ARTIFACT_PLATFORM="Linux"
+ARTIFACT_TYPE="Editor"
+GET_ARTIFACT_ID_PATH="https://godotengine.github.io/godot-commit-artifacts/download/godotengine/godot/master/linux-editor-mono"
+cd "${HOME}/bin" || exit
+downloadArtifact
+if [[ -e artifact.zip ]]; then
+  if [[ -e godot.linuxbsd.editor.x86_64.mono ]]; then
+    rm godot.linuxbsd.editor.x86_64.mono
+  fi
+  if [[ -d GodotSharp ]]; then
+    rm -rf GodotSharp
+  fi
+  unzip -qq artifact.zip
+  chmod +x godot.linuxbsd.editor.x86_64.mono
+  if [[ -e godot ]]; then
+    rm godot
+  fi
+  ln -s godot.linuxbsd.editor.x86_64.mono godot
+  rm artifact.zip
+  printf "${YELLOW}Godot version $(godot --version) is built and in the path.${NC}\n"
 fi
