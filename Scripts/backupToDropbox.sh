@@ -96,6 +96,7 @@ UNISON_ARGUMENTS+=(-ignore "Name .viminfo")
 UNISON_ARGUMENTS+=(-ignore "Name .wget-hsts")
 UNISON_ARGUMENTS+=(-ignore "Name .git") # If I exclude this, I lose git history for non-github repositories, but this is MOST of the churn, so doing it anyway.
 UNISON_ARGUMENTS+=(-ignore "Name .local/share/godot")
+UNISON_ARGUMENTS+=(-ignore "Name Clone")
 UNISON_ARGUMENTS+=(-batch) # Don't ask, just do it. This is a backup.
 
 if [[ -d "${BACKUP_PATH}" ]]; then
