@@ -1,8 +1,8 @@
 #!/bin/bash
-REMOTE_IP=twoflower
+REMOTE_IP=192.168.1.118
 
 function copyArlobotDotFiles() {
-  unison "${HOME}"/Dev/ArlobotDotfiles/${REMOTE_IP} ssh://ubuntu@"${REMOTE_IP}"//home/ubuntu -path .arlobot -auto
+  unison "${HOME}"/Dev/ArlobotDotfiles/${REMOTE_IP} ssh://ubuntu@"${REMOTE_IP}"//home/ubuntu -path .arlobot -sshcmd "ssh.exe" -auto
 }
 
 copyArlobotDotFiles
@@ -18,6 +18,7 @@ UNISON_ARGUMENTS+=(-ignore "Name xscreenOld.png")
 UNISON_ARGUMENTS+=(-ignore "Name node_modules")
 UNISON_ARGUMENTS+=(-ignore "Name mycroft-core")
 UNISON_ARGUMENTS+=(-auto)
+UNISON_ARGUMENTS+=(-sshcmd "ssh.exe")
 
 if unison "${UNISON_ARGUMENTS[@]}"; then
   unison "${UNISON_ARGUMENTS[@]}" -batch -repeat watch
