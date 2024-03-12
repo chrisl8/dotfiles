@@ -31,7 +31,7 @@ if ! (command -v gh >/dev/null); then
   sudo apt update
   sudo apt install gh -y
   printf "\n${YELLOW}You will probably need to run 'gh auth login' once and then run this setup script again.${NC}\n"
-  printf"\nUse 'BROWSER=false gh auth login' to force display of a URL instead of opening a browser.${NC}\n"
+  printf "\nUse 'BROWSER=false gh auth login' to force display of a URL instead of opening a browser.${NC}\n"
 fi
 
 cd || exit 1
