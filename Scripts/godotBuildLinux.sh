@@ -11,9 +11,9 @@ NC='\033[0m' # NoColor
 
 printf "\n${YELLOW}Checking latest Godot version from GitHub.${NC}\n"
 
-# Kind of assuming if clong and lld exist, the rest do.
+# Kind of assuming if clang and lld exist, the rest do.
 if ! (command -v clang >/dev/null) || ! (command -v lld >/dev/null); then
-  sudo apt install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev clang lld
+  sudo apt install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev clang lld -y
 fi
 
 REPO_UPDATED="False"
