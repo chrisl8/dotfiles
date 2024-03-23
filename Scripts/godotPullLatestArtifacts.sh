@@ -1,6 +1,12 @@
 #!/bin/bash
 # shellcheck disable=SC2059
 
+# This is a script to automatically pull down the latest build artifacts for Godot from GitHub.
+# Note that I no longer use or maintain this, because I build these all from source myself now
+# with the godotBuildLinux.sh script and the buildGodot.ps1 script in my "Scripts" repository.
+
+# This is a good example of authenticating with GitHub, parsing basic URL responses, and downloading stuff.
+
 set -e
 
 YELLOW='\033[1;33m'
