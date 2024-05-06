@@ -19,24 +19,7 @@ NC='\033[0m' # NoColor
 
 cd "${SCRIPT_DIR}"
 
-PACKAGE_MANAGER=""
-
-declare -A osInfo;
-osInfo[/etc/redhat-release]=yum
-osInfo[/etc/arch-release]=pacman
-osInfo[/etc/gentoo-release]=emerge
-osInfo[/etc/SuSE-release]=zypp
-osInfo[/etc/debian_version]=apt
-osInfo[/etc/alpine-release]=apk
-
-for f in "${!osInfo[@]}"
-do
-    if [[ -f $f ]];then
-        PACKAGE_MANAGER=${osInfo[$f]}
-    fi
-done
-
-if [[ "${PACKAGE_MANAGER}" == "apt" ]]; then
+if [[ -e /etc/debian_version ]]; then
   printf "\n${LIGHT_CYAN}[Install APT packages]${NC}\n"
   sudo apt update
   sudo apt install -y zsh tmux keychain wget curl vim
@@ -48,7 +31,7 @@ if (command -v sw_vers >/dev/null); then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
   brew install python gh scons node
-elif ! (command -v gh >/dev/null); then
+elif ! (command -v gh >/dev/null) && [[ -e /etc/debian_version ]]; then
   # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
   printf "\n${YELLOW}[Installing Github CLI]${NC}\n"
   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
