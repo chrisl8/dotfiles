@@ -30,7 +30,7 @@ if (command -v sw_vers >/dev/null); then
   if ! (command -v brew >/dev/null); then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
-  brew install python gh scons node
+  brew install python gh scons node wget
 elif ! (command -v gh >/dev/null) && [[ -e /etc/debian_version ]]; then
   # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
   printf "\n${YELLOW}[Installing Github CLI]${NC}\n"
