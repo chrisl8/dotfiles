@@ -48,20 +48,26 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.c
 vim -c ':PlugClean | quit | quit'
 vim -c ':PlugUpdate | quit | quit'
 
-printf "\n${BRIGHT_MAGENTA}Ubuntu Updates${NC}\n"
-sudo apt update
-sudo apt -y upgrade
-sudo apt -y autoremove
+if [[ -e /etc/debian_version ]]; then
+  printf "\n${BRIGHT_MAGENTA}Ubuntu Updates${NC}\n"
+  sudo apt update
+  sudo apt -y upgrade
+  sudo apt -y autoremove
+fi
+
+if (command -v brew >/dev/null); then
+  brew update
+  brew upgrade
+fi
 
 # NOTE: Only update things that YOU installed via pip.
 # It often breaks things to use pip to install system level packages, as they were probably installed
 # by Ubuntu itself.
-if (command -v pip >/dev/null) && [[ -e ${HOME}/.local/bin/gdformat ]]; then
+if (command -v pip >/dev/null); then
   printf "\n${BRIGHT_MAGENTA}Python Updates${NC}\n"
   printf "\n${LIGHTBLUE}Updating PIP${NC}\n"
   sudo /usr/bin/python -m pip install --upgrade pip
-  printf "\n${LIGHTBLUE}Install/Updating Python Packages${NC}\n"
-  pip install "gdtoolkit==4.*" --upgrade
+  #printf "\n${LIGHTBLUE}Install/Updating Python Packages${NC}\n"
 fi
 
 PM2_INSTALLED=0
@@ -69,63 +75,65 @@ if (command -v pm2 >/dev/null); then
   PM2_INSTALLED=1
 fi
 
-export NVM_DIR="${HOME}/.nvm"
-export NVM_SYMLINK_CURRENT=true
-# shellcheck source=/home/chrisl8/.nvm/nvm.sh
-[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
-NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
-NVM_VERSION_LATEST="${NVM_TAG//v/}"
-NVM_VERSION=$(nvm --version)
-if [ "$NVM_VERSION" != "$NVM_VERSION_LATEST" ]; then
-  printf "\n${BRIGHT_MAGENTA}Updating NVM from ${NVM_VERSION} to ${NVM_VERSION_LATEST}${NC}\n"
+if (command -v nvm); then
+  export NVM_DIR="${HOME}/.nvm"
+  export NVM_SYMLINK_CURRENT=true
+  # shellcheck source=/home/chrisl8/.nvm/nvm.sh
+  [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+  NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
+  NVM_VERSION_LATEST="${NVM_TAG//v/}"
+  NVM_VERSION=$(nvm --version)
+  if [ "$NVM_VERSION" != "$NVM_VERSION_LATEST" ]; then
+    printf "\n${BRIGHT_MAGENTA}Updating NVM from ${NVM_VERSION} to ${NVM_VERSION_LATEST}${NC}\n"
 
-  if [[ -e ${HOME}/.nvm/nvm.sh ]]; then
-    printf "${LIGHTBLUE}Deactivating existing Node Version Manager:${NC}\n"
+    if [[ -e ${HOME}/.nvm/nvm.sh ]]; then
+      printf "${LIGHTBLUE}Deactivating existing Node Version Manager:${NC}\n"
+      export NVM_DIR="${HOME}/.nvm"
+      # shellcheck source=/home/chrisl8/.nvm/nvm.sh
+      [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+      nvm deactivate
+    fi
+
+    wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_TAG/install.sh" | bash
     export NVM_DIR="${HOME}/.nvm"
     # shellcheck source=/home/chrisl8/.nvm/nvm.sh
     [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
-    nvm deactivate
+
+    export NVM_SYMLINK_CURRENT=true
+    if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
+      printf "\n${YELLOW}[Setting the NVM current environment in your .bashrc file]${NC}\n"
+      sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.bashrc"
+    fi
+    if ! (grep NVM_SYMLINK_CURRENT ~/.zshrc >/dev/null); then
+      printf "\n${YELLOW}[Setting the NVM current environment in your .zshrc file]${NC}\n"
+      sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.zshrc"
+    fi
   fi
 
-  wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_TAG/install.sh" | bash
-  export NVM_DIR="${HOME}/.nvm"
-  # shellcheck source=/home/chrisl8/.nvm/nvm.sh
-  [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+  NODE_VERSION=$(node -v)
 
-  export NVM_SYMLINK_CURRENT=true
-  if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
-    printf "\n${YELLOW}[Setting the NVM current environment in your .bashrc file]${NC}\n"
-    sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.bashrc"
+  printf "\n${BRIGHT_MAGENTA}Node.js Updates${NC}\n"
+  nvm install node
+  nvm use node
+  nvm alias default node
+
+  NODE_VERSION_NEW=$(node -v)
+
+  NPM_VERSION=$(npm -v)
+  NPM_VERSION_LATEST=$(npm view npm version)
+  if [ "$NPM_VERSION" != "$NPM_VERSION_LATEST" ]; then
+    printf "\n${BRIGHT_MAGENTA}Updating NPM from ${NPM_VERSION} to ${NPM_VERSION_LATEST}${NC}\n"
+    npm i -g npm
   fi
-  if ! (grep NVM_SYMLINK_CURRENT ~/.zshrc >/dev/null); then
-    printf "\n${YELLOW}[Setting the NVM current environment in your .zshrc file]${NC}\n"
-    sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.zshrc"
-  fi
-fi
 
-NODE_VERSION=$(node -v)
-
-printf "\n${BRIGHT_MAGENTA}Node.js Updates${NC}\n"
-nvm install node
-nvm use node
-nvm alias default node
-
-NODE_VERSION_NEW=$(node -v)
-
-NPM_VERSION=$(npm -v)
-NPM_VERSION_LATEST=$(npm view npm version)
-if [ "$NPM_VERSION" != "$NPM_VERSION_LATEST" ]; then
-  printf "\n${BRIGHT_MAGENTA}Updating NPM from ${NPM_VERSION} to ${NPM_VERSION_LATEST}${NC}\n"
-  npm i -g npm
-fi
-
-if [[ ${PM2_INSTALLED} == 1 ]]; then
-  if [ "$NODE_VERSION" != "$NODE_VERSION_NEW" ] || [ "$(pm2 -v)" != "$(npm view pm2 version)" ];then
-    printf "\n${BRIGHT_MAGENTA}Reinstalling/Updating PM2${NC}\n"
-    npm i -g pm2
-    pm2 install pm2-logrotate
-    # I have literally never looked at a historical pm2 log, so retaining just 1 saves a lot of space on VMs and Raspberry Pis.
-    pm2 set pm2-logrotate:retain 1
+  if [[ ${PM2_INSTALLED} == 1 ]]; then
+    if [ "$NODE_VERSION" != "$NODE_VERSION_NEW" ] || [ "$(pm2 -v)" != "$(npm view pm2 version)" ];then
+      printf "\n${BRIGHT_MAGENTA}Reinstalling/Updating PM2${NC}\n"
+      npm i -g pm2
+      pm2 install pm2-logrotate
+      # I have literally never looked at a historical pm2 log, so retaining just 1 saves a lot of space on VMs and Raspberry Pis.
+      pm2 set pm2-logrotate:retain 1
+    fi
   fi
 fi
 
