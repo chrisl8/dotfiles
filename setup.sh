@@ -19,10 +19,36 @@ NC='\033[0m' # NoColor
 
 cd "${SCRIPT_DIR}"
 
-sudo apt update
-sudo apt install -y zsh tmux keychain wget curl vim
+PACKAGE_MANAGER=""
 
-if ! (command -v gh >/dev/null); then
+declare -A osInfo;
+osInfo[/etc/redhat-release]=yum
+osInfo[/etc/arch-release]=pacman
+osInfo[/etc/gentoo-release]=emerge
+osInfo[/etc/SuSE-release]=zypp
+osInfo[/etc/debian_version]=apt
+osInfo[/etc/alpine-release]=apk
+
+for f in "${!osInfo[@]}"
+do
+    if [[ -f $f ]];then
+        PACKAGE_MANAGER=${osInfo[$f]}
+    fi
+done
+
+if [[ "${PACKAGE_MANAGER}" == "apt" ]]; then
+  printf "\n${LIGHT_CYAN}[Install APT packages]${NC}\n"
+  sudo apt update
+  sudo apt install -y zsh tmux keychain wget curl vim
+fi
+
+if (command -v sw_vers >/dev/null); then
+  printf "\n${LIGHT_CYAN}[Install Homebrew packages]${NC}\n"
+  if ! (command -v brew >/dev/null); then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+  brew install python gh scons node
+elif ! (command -v gh >/dev/null); then
   # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
   printf "\n${YELLOW}[Installing Github CLI]${NC}\n"
   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
@@ -121,7 +147,7 @@ if ! [[ -L .p10k.zsh ]]; then
   ln -s dotfiles/.p10k.zsh .
 fi
 
-if ! (grep "${USER}" /etc/passwd | grep zsh >/dev/null); then
+if ! (command -v sw_vers >/dev/null) && ! (grep "${USER}" /etc/passwd | grep zsh >/dev/null); then
   LOGOUT=true
   printf "\n${BRIGHT_MAGENTA}Setting ZSH as your default shell.${NC}\n"
   # Actually I think Oh My ZSH does this itself anyway, but it doesnt' hurt.
@@ -170,27 +196,30 @@ vim -c ':PlugUpdate | quit | quit'
 
 cd || exit 1
 
-printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
-printf "\n${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
-if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
-  NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
-  wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_TAG/install.sh" | bash
+  if ! (command -v brew >/dev/null); then
+  printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
+  printf "\n${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
+  if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
+    NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
+    wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_TAG/install.sh" | bash
+  fi
+
+  export NVM_DIR="${HOME}/.nvm"
+  export NVM_SYMLINK_CURRENT=true
+  # shellcheck source=/home/chrisl8/.nvm/nvm.sh
+  [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
+  if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
+    printf "\n${YELLOW}[Setting the NVM current environment in your .bashrc file]${NC}\n"
+    sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.bashrc"
+    # NOTE: This is already set it our standard .zshrc file, so no need to set it there.
+  fi
+
+  nvm install node --latest-npm
+  nvm use node
+  nvm alias default node
 fi
 
-export NVM_DIR="${HOME}/.nvm"
-export NVM_SYMLINK_CURRENT=true
-# shellcheck source=/home/chrisl8/.nvm/nvm.sh
-[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
-
-if ! (grep NVM_SYMLINK_CURRENT ~/.bashrc >/dev/null); then
-  printf "\n${YELLOW}[Setting the NVM current environment in your .bashrc file]${NC}\n"
-  sh -c "echo \"export NVM_SYMLINK_CURRENT=true\" >> ~/.bashrc"
-  # NOTE: This is already set it our standard .zshrc file, so no need to set it there.
-fi
-
-nvm install node --latest-npm
-nvm use node
-nvm alias default node
 
 cd ~/dotfiles/node || exit 1
 npm ci
