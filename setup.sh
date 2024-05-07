@@ -184,7 +184,7 @@ vim -c ':PlugUpdate | quit | quit'
 
 cd || exit 1
 
- f ! (command -v brew >/dev/null); then
+if ! (command -v brew >/dev/null); then
   printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
   printf "\n${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
   if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
