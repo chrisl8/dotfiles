@@ -22,7 +22,12 @@ cd "${SCRIPT_DIR}"
 if [[ -e /etc/debian_version ]]; then
   printf "\n${LIGHT_CYAN}[Install APT packages]${NC}\n"
   sudo apt update
-  sudo apt install -y zsh tmux keychain wget curl vim
+  sudo apt install -y git vim tmux zsh keychain wget curl
+fi
+
+if [[ -e /etc/manjaro-release ]]; then
+  printf "\n${LIGHT_CYAN}[Install PAMAC packages]${NC}\n"
+  pamac install base-devel git github-cli vim tmux zsh wget curl
 fi
 
 if (command -v sw_vers >/dev/null); then
@@ -179,7 +184,7 @@ vim -c ':PlugUpdate | quit | quit'
 
 cd || exit 1
 
-  if ! (command -v brew >/dev/null); then
+ f ! (command -v brew >/dev/null); then
   printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
   printf "\n${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
   if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
