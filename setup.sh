@@ -208,6 +208,9 @@ if ! (command -v brew >/dev/null); then
   nvm alias default node
 fi
 
+if ! [[ -d "${HOME}/bin" ]]; then
+  mkdir "${HOME}/bin"
+fi
 
 cd ~/dotfiles/node || exit 1
 npm ci
