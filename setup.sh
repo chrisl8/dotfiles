@@ -208,7 +208,7 @@ if ! (command -v brew >/dev/null); then
   nvm alias default node
 fi
 
-if ! [[ -d "${HOME}/bin" ]]; then
+if ! [[ -e "${HOME}/bin" ]]; then
   mkdir "${HOME}/bin"
 fi
 
