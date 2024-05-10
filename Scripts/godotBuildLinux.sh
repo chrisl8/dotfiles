@@ -9,10 +9,13 @@ YELLOW='\033[1;33m'
 LIGHTBLUE='\033[1;34m'
 NC='\033[0m' # NoColor
 
-# Kind of assuming if clang and lld exist, the rest do.
-# TODO: Default is to use gcc now, so maybe move clang and lld check and install elsewhere?
-if ! (command -v clang >/dev/null) || ! (command -v lld >/dev/null); then
-  sudo apt install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev clang lld -y
+# Kind of assuming if scons exist, the rest do.
+if ! (command -v scons >/dev/null); then
+  if (command -v apt > /dev/null); then
+    sudo apt install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev clang lld -y
+  elif (command -v pamac > /dev/null); then
+    pamac install scons pkgconf gcc libxcursor libxinerama libxi libxrandr mesa glu libglvnd alsa-lib
+  fi
 fi
 
 REPO_UPDATED="False"

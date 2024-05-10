@@ -27,7 +27,7 @@ fi
 
 if [[ -e /etc/manjaro-release ]]; then
   printf "\n${LIGHT_CYAN}[Install PAMAC packages]${NC}\n"
-  pamac install base-devel git github-cli vim tmux zsh wget curl
+  pamac install --no-confirm git github-cli vim tmux zsh wget curl
 fi
 
 if (command -v sw_vers >/dev/null); then

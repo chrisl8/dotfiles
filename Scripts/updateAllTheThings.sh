@@ -60,6 +60,11 @@ if (command -v brew >/dev/null); then
   brew upgrade
 fi
 
+if (command -v pamac >/dev/null); then
+  printf "\n${BRIGHT_MAGENTA}Manjaro Updates${NC}\n"
+  pamac update
+fi
+
 # NOTE: Only update things that YOU installed via pip.
 # It often breaks things to use pip to install system level packages, as they were probably installed
 # by Ubuntu itself.
