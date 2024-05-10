@@ -68,7 +68,7 @@ fi
 # NOTE: Only update things that YOU installed via pip.
 # It often breaks things to use pip to install system level packages, as they were probably installed
 # by Ubuntu itself.
-if (command -v pip >/dev/null); then
+if ! (command -v pamac >/dev/null) && (command -v pip >/dev/null); then
   printf "\n${BRIGHT_MAGENTA}Python Updates${NC}\n"
   printf "\n${LIGHTBLUE}Updating PIP${NC}\n"
   sudo /usr/bin/python -m pip install --upgrade pip
