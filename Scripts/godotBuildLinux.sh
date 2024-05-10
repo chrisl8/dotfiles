@@ -92,12 +92,13 @@ PLATFORM="linuxbsd"
 if (command -v sw_vers >/dev/null); then
   PLATFORM="macos"
 fi
+ARCHITECTURE=$(uname -m)
 
-EDITOR_BINARY_NAME="godot.${PLATFORM}.editor.x86_64"
-LINUX_EXPORT_TEMPLATE_NAME="godot.${PLATFORM}.template_release.x86_64"
+EDITOR_BINARY_NAME="godot.${PLATFORM}.editor.${ARCHITECTURE}"
+LINUX_EXPORT_TEMPLATE_NAME="godot.${PLATFORM}.template_release.${ARCHITECTURE}"
 if [[ $USE_CLANG == "True" ]]; then
-  EDITOR_BINARY_NAME="godot.${PLATFORM}.editor.x86_64.llvm"
-  LINUX_EXPORT_TEMPLATE_NAME="godot.${PLATFORM}.template_release.x86_64.llvm"
+  EDITOR_BINARY_NAME="godot.${PLATFORM}.editor.${ARCHITECTURE}.llvm"
+  LINUX_EXPORT_TEMPLATE_NAME="godot.${PLATFORM}.template_release.${ARCHITECTURE}.llvm"
 fi
 
 if ! [[ -d bin ]] || ! [[ -e "bin/${EDITOR_BINARY_NAME}" ]] || ! [[ -e "bin/${LINUX_EXPORT_TEMPLATE_NAME}" ]] || [[ $REPO_UPDATED == "True" ]]; then
@@ -124,19 +125,19 @@ fi
 
 EXPORT_TEMPLATE_FOLDER_NAME=$("bin/${EDITOR_BINARY_NAME}" --version | cut -d "." -f 1,2,3)
 mkdir -p "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}"
-cp "bin/${LINUX_EXPORT_TEMPLATE_NAME}" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_debug.x86_64"
-cp "bin/${LINUX_EXPORT_TEMPLATE_NAME}" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_release.x86_64"
+cp "bin/${LINUX_EXPORT_TEMPLATE_NAME}" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_debug.${ARCHITECTURE}"
+cp "bin/${LINUX_EXPORT_TEMPLATE_NAME}" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_release.${ARCHITECTURE}"
 
-printf "${YELLOW}Linux Export Template version $("$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_release.x86_64" --version) is built and in place.${NC}\n"
+printf "${YELLOW}Linux Export Template version $("$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_release.${ARCHITECTURE}" --version) is built and in place.${NC}\n"
 
 cp "bin/godot.web.template_release.wasm32.zip" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/web_debug.zip"
 cp "bin/godot.web.template_release.wasm32.zip" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/web_release.zip"
 printf "${YELLOW}Web Export Template was copied in place.${NC}\n"
 
-if [[ -e /mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_release.x86_64.exe ]]; then
-  cp "/mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_release.x86_64.exe" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/windows_debug_x86_64.exe"
-  cp "/mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_release.x86_64.exe" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/windows_release_x86_64.exe"
-  WINDOWS_EXPORT_TEMPLATE_VERSION=$("$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/windows_release_x86_64.exe" --version)
+if [[ -e /mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_release.${ARCHITECTURE}.exe ]]; then
+  cp "/mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_release.${ARCHITECTURE}.exe" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/windows_debug_${ARCHITECTURE}.exe"
+  cp "/mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_release.${ARCHITECTURE}.exe" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/windows_release_${ARCHITECTURE}.exe"
+  WINDOWS_EXPORT_TEMPLATE_VERSION=$("$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/windows_release_${ARCHITECTURE}.exe" --version)
   # https://stackoverflow.com/a/22045214/4982408
   printf "${YELLOW}Windows Export Template version $(tr -dc '[[:print:]]' <<< "$WINDOWS_EXPORT_TEMPLATE_VERSION") was copied in place.${NC}\n"
 else
