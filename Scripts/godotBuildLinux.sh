@@ -38,6 +38,11 @@ done
 EMSDK_REPO_UPDATED="False"
 EMSDK_QUIET=1
 export EMSDK_QUIET
+
+if ! [[ -d "${HOME}/Clone" ]]; then
+  mkdir -p "${HOME}/Clone"
+fi
+
 cd "${HOME}/Clone" || exit
 if [[ -d "emsdk" ]]; then
   cd emsdk || exit
