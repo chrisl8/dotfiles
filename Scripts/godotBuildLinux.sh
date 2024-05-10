@@ -83,11 +83,16 @@ else
   cd godot || exit
 fi
 
-EDITOR_BINARY_NAME="godot.linuxbsd.editor.x86_64"
-LINUX_EXPORT_TEMPLATE_NAME="godot.linuxbsd.template_release.x86_64"
+PLATFORM="linuxbsd"
+if (command -v sw_vers >/dev/null); then
+  PLATFORM="macos"
+fi
+
+EDITOR_BINARY_NAME="godot.${PLATFORM}.editor.x86_64"
+LINUX_EXPORT_TEMPLATE_NAME="godot.${PLATFORM}.template_release.x86_64"
 if [[ $USE_CLANG == "True" ]]; then
-  EDITOR_BINARY_NAME="godot.linuxbsd.editor.x86_64.llvm"
-  LINUX_EXPORT_TEMPLATE_NAME="godot.linuxbsd.template_release.x86_64.llvm"
+  EDITOR_BINARY_NAME="godot.${PLATFORM}.editor.x86_64.llvm"
+  LINUX_EXPORT_TEMPLATE_NAME="godot.${PLATFORM}.template_release.x86_64.llvm"
 fi
 
 if ! [[ -d bin ]] || ! [[ -e "bin/${EDITOR_BINARY_NAME}" ]] || ! [[ -e "bin/${LINUX_EXPORT_TEMPLATE_NAME}" ]] || [[ $REPO_UPDATED == "True" ]]; then
@@ -95,12 +100,12 @@ if ! [[ -d bin ]] || ! [[ -e "bin/${EDITOR_BINARY_NAME}" ]] || ! [[ -e "bin/${LI
     # Docs say using clang is faster, which is what use_llvm=yes does, but that GCC makes smaller faster binaries.
     # Docs say using LLD with clang is faster, which is what linker=lld does.
     printf "${LIGHTBLUE}  Building updated version of Godot with Clang...${NC}\n"
-    scons -Q platform=linuxbsd production=yes use_llvm=yes linker=lld # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
-    scons -Q platform=linuxbsd target=template_release production=yes use_llvm=yes linker=lld # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+    scons -Q platform=${PLATFORM} production=yes use_llvm=yes linker=lld # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+    scons -Q platform=${PLATFORM} target=template_release production=yes use_llvm=yes linker=lld # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
   else
     printf "${LIGHTBLUE}  Building updated version of Godot with GCC...${NC}\n"
-    scons -Q platform=linuxbsd production=yes # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
-    scons -Q platform=linuxbsd target=template_release production=yes # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+    scons -Q platform=${PLATFORM} production=yes # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+    scons -Q platform=${PLATFORM} target=template_release production=yes # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
   fi
   scons -Q platform=web target=template_release # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
   if [[ "$LOCAL" != "" ]] && [[ "$REMOTE" != "" ]]; then
