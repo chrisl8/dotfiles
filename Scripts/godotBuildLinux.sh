@@ -5,10 +5,17 @@
 
 set -e
 
+#BLUE='\033[0;34m'
+#GREEN='\033[0;32m'
+#RED='\033[0;31m'
+#PURPLE='\033[0;35m'
+#LIGHT_PURPLE='\033[1;35m'
 YELLOW='\033[1;33m'
+LIGHTCYAN='\033[1;36m'
 LIGHTBLUE='\033[1;34m'
+#LIGHTPURPLE='\033[1;35m'
+#BRIGHT_MAGENTA='\033[1;95m'
 NC='\033[0m' # NoColor
-
 # Kind of assuming if scons exist, the rest do.
 if ! (command -v scons >/dev/null); then
   if (command -v apt > /dev/null); then
@@ -20,6 +27,8 @@ fi
 
 REPO_UPDATED="False"
 USE_CLANG="False"
+SKIP_WEB_TEMPLATE="False"
+SKIP_PLATFORM_TEMPLATE="False"
 
 while test $# -gt 0
 do
@@ -27,6 +36,10 @@ do
                 --force) REPO_UPDATED="True"
                 ;;
                 --clang) USE_CLANG="True"
+                ;;
+                --skip_web_template) SKIP_WEB_TEMPLATE="True"
+                ;;
+                --skip_platform_template) SKIP_PLATFORM_TEMPLATE="True"
                 ;;
         *) echo "Invalid argument"
                 exit
@@ -107,13 +120,19 @@ if ! [[ -d bin ]] || ! [[ -e "bin/${EDITOR_BINARY_NAME}" ]] || ! [[ -e "bin/${LI
     # Docs say using LLD with clang is faster, which is what linker=lld does.
     printf "${LIGHTBLUE}  Building updated version of Godot with Clang...${NC}\n"
     scons -Q platform=${PLATFORM} production=yes use_llvm=yes linker=lld # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
-    scons -Q platform=${PLATFORM} target=template_release production=yes use_llvm=yes linker=lld # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+    if [[ $SKIP_PLATFORM_TEMPLATE == "False" ]]; then
+      scons -Q platform=${PLATFORM} target=template_release production=yes use_llvm=yes linker=lld # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+    fi
   else
     printf "${LIGHTBLUE}  Building updated version of Godot with GCC...${NC}\n"
     scons -Q platform=${PLATFORM} production=yes # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
-    scons -Q platform=${PLATFORM} target=template_release production=yes # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+    if [[ $SKIP_PLATFORM_TEMPLATE == "False" ]]; then
+      scons -Q platform=${PLATFORM} target=template_release production=yes # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+    fi
   fi
-  scons -Q platform=web target=template_release # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+  if [[ $SKIP_WEB_TEMPLATE == "False" ]];then
+    scons -Q platform=web target=template_release # module_text_server_adv_enabled=no module_text_server_fb_enabled=yes
+  fi
   if [[ "$LOCAL" != "" ]] && [[ "$REMOTE" != "" ]]; then
     printf "${LIGHTBLUE}  Built godot with the following changes:${NC}\n"
     git --no-pager log --oneline ^"$LOCAL" "$REMOTE"
@@ -125,14 +144,21 @@ fi
 
 EXPORT_TEMPLATE_FOLDER_NAME=$("bin/${EDITOR_BINARY_NAME}" --version | cut -d "." -f 1,2,3)
 mkdir -p "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}"
-cp "bin/${LINUX_EXPORT_TEMPLATE_NAME}" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_debug.${ARCHITECTURE}"
-cp "bin/${LINUX_EXPORT_TEMPLATE_NAME}" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_release.${ARCHITECTURE}"
+if [[ -e bin/${LINUX_EXPORT_TEMPLATE_NAME} ]];then
+  cp "bin/${LINUX_EXPORT_TEMPLATE_NAME}" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_debug.${ARCHITECTURE}"
+  cp "bin/${LINUX_EXPORT_TEMPLATE_NAME}" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_release.${ARCHITECTURE}"
+  printf "${YELLOW}Linux Export Template version $("$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_release.${ARCHITECTURE}" --version) is built and in place.${NC}\n"
+else
+  printf "${LIGHTCYAN}Linux Export Template not built.${NC}\n"
+fi
 
-printf "${YELLOW}Linux Export Template version $("$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/linux_release.${ARCHITECTURE}" --version) is built and in place.${NC}\n"
-
-cp "bin/godot.web.template_release.wasm32.zip" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/web_debug.zip"
-cp "bin/godot.web.template_release.wasm32.zip" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/web_release.zip"
-printf "${YELLOW}Web Export Template was copied in place.${NC}\n"
+if [[ -e bin/godot.web.template_release.wasm32.zip ]]; then
+  cp "bin/godot.web.template_release.wasm32.zip" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/web_debug.zip"
+  cp "bin/godot.web.template_release.wasm32.zip" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/web_release.zip"
+  printf "${YELLOW}Web Export Template was copied in place.${NC}\n"
+else
+  printf "${LIGHTCYAN}Web Export Template not built.${NC}\n"
+fi
 
 if [[ -e /mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_release.${ARCHITECTURE}.exe ]]; then
   cp "/mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_release.${ARCHITECTURE}.exe" "$HOME/.local/share/godot/export_templates/${EXPORT_TEMPLATE_FOLDER_NAME}/windows_debug_${ARCHITECTURE}.exe"
@@ -141,7 +167,7 @@ if [[ -e /mnt/c/Users/chris/CLionProjects/godot/bin/godot.windows.template_relea
   # https://stackoverflow.com/a/22045214/4982408
   printf "${YELLOW}Windows Export Template version $(tr -dc '[[:print:]]' <<< "$WINDOWS_EXPORT_TEMPLATE_VERSION") was copied in place.${NC}\n"
 else
-  printf "${YELLOW}Windows Export Template not found.${NC}\n"
+  printf "${LIGHTCYAN}Windows Export Template not found.${NC}\n"
 fi
 
 cp "bin/${EDITOR_BINARY_NAME}" "$HOME/bin"
