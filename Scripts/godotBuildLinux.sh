@@ -48,38 +48,41 @@ do
         shift
 done
 
-EMSDK_REPO_UPDATED="False"
-EMSDK_QUIET=1
-export EMSDK_QUIET
-
 if ! [[ -d "${HOME}/Clone" ]]; then
   mkdir -p "${HOME}/Clone"
 fi
 
 cd "${HOME}/Clone" || exit
-if [[ -d "emsdk" ]]; then
-  cd emsdk || exit
-  git fetch
-  LOCAL=$(git rev-parse @)
-  REMOTE=$(git rev-parse "@{u}")
-  if [[ "$LOCAL" != "$REMOTE" ]]; then
-    EMSDK_REPO_UPDATED="True"
-    printf "${LIGHTBLUE}Pulling updates for Emscripten SDK for Web Export Template build...${NC}\n"
-    git pull
-  fi
-else
-  EMSDK_REPO_UPDATED="True"
-  printf "${LIGHTBLUE}Cloning Emscripten SDK for Web Export Template build...${NC}\n"
-  gh repo clone emscripten-core/emsdk
-  cd emsdk || exit
-fi
 
-if [[ $EMSDK_REPO_UPDATED == "True" ]]; then
-  printf "${LIGHTBLUE}Updating Emscripten SDK for Web Export Template build...${NC}\n"
-  ./emsdk install latest
+if [[ $SKIP_WEB_TEMPLATE == "False" ]];then
+  EMSDK_REPO_UPDATED="False"
+  EMSDK_QUIET=1
+  export EMSDK_QUIET
+
+  if [[ -d "emsdk" ]]; then
+    cd emsdk || exit
+    git fetch
+    LOCAL=$(git rev-parse @)
+    REMOTE=$(git rev-parse "@{u}")
+    if [[ "$LOCAL" != "$REMOTE" ]]; then
+      EMSDK_REPO_UPDATED="True"
+      printf "${LIGHTBLUE}Pulling updates for Emscripten SDK for Web Export Template build...${NC}\n"
+      git pull
+    fi
+  else
+    EMSDK_REPO_UPDATED="True"
+    printf "${LIGHTBLUE}Cloning Emscripten SDK for Web Export Template build...${NC}\n"
+    gh repo clone emscripten-core/emsdk
+    cd emsdk || exit
+  fi
+
+  if [[ $EMSDK_REPO_UPDATED == "True" ]]; then
+    printf "${LIGHTBLUE}Updating Emscripten SDK for Web Export Template build...${NC}\n"
+    ./emsdk install latest
+  fi
+  ./emsdk activate latest > /dev/null
+  source ./emsdk_env.sh
 fi
-./emsdk activate latest > /dev/null
-source ./emsdk_env.sh
 
 printf "\n${YELLOW}Checking latest Godot version from GitHub.${NC}\n"
 LOCAL=""
