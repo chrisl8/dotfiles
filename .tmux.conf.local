@@ -438,5 +438,5 @@ bind p previous-window
 bind n next-window
 
 # Saner splitting.
-bind v split-window -h -p 50
-bind s split-window -v -p 50
+bind v split-window -h -l 50%
+bind s split-window -v -l 50%
