@@ -44,7 +44,7 @@ git pull
 cd || exit
 
 printf "\n${BRIGHT_MAGENTA}VIM Updates${NC}\n"
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim || true
 vim -c ':PlugClean | quit | quit'
 vim -c ':PlugUpdate | quit | quit'
 
