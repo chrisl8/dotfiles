@@ -71,7 +71,9 @@ fi
 if ! (command -v pamac >/dev/null) && (command -v pip >/dev/null); then
   printf "\n${BRIGHT_MAGENTA}Python Updates${NC}\n"
   printf "\n${LIGHTBLUE}Updating PIP${NC}\n"
+  set +e
   sudo /usr/bin/python -m pip install --upgrade pip
+  set -e
   #printf "\n${LIGHTBLUE}Install/Updating Python Packages${NC}\n"
 fi
 
