@@ -32,8 +32,13 @@ cd ~/dotfiles || exit
 git pull
 cd || exit
 
-printf "\n${BRIGHT_MAGENTA}Updating Oh My ZSH!${NC}\n"
-env ZSH="$ZSH" zsh "$ZSH"/tools/upgrade.sh
+if (command -v zsh >/dev/null); then
+  printf "\n${BRIGHT_MAGENTA}Updating Oh My ZSH!${NC}\n"
+  if [[ ${ZSH} == "" ]]; then
+    ZSH=~/.oh-my-zsh
+  fi
+  env ZSH="$ZSH" zsh "$ZSH"/tools/upgrade.sh
+fi
 
 printf "\n${BRIGHT_MAGENTA}Updating powerlevel10k${NC}\n"
 git -C "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k pull
@@ -82,8 +87,13 @@ if (command -v pm2 >/dev/null); then
   PM2_INSTALLED=1
 fi
 
+export NVM_DIR="${HOME}/.nvm"
+if [[ -e "${NVM_DIR}/nvm.sh" ]]; then
+  # shellcheck source=/home/chrisl8/.nvm/nvm.sh
+  [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
+fi
+
 if (command -v nvm); then
-  export NVM_DIR="${HOME}/.nvm"
   export NVM_SYMLINK_CURRENT=true
   # shellcheck source=/home/chrisl8/.nvm/nvm.sh
   [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm

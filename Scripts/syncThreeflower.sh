@@ -1,5 +1,5 @@
 #!/bin/bash
-REMOTE_IP=192.168.1.118
+REMOTE_IP=172.27.7.29
 
 
 function copyArlobotDotFiles() {
@@ -11,7 +11,7 @@ copyArlobotDotFiles
 UNISON_ARGUMENTS=()
 UNISON_ARGUMENTS+=("${HOME}")
 UNISON_ARGUMENTS+=(ssh://"${REMOTE_IP}"/"${HOME}")
-UNISON_ARGUMENTS+=(-path catkin_ws/src/ArloBot)
+UNISON_ARGUMENTS+=(-path dev_ws/src/ArloBot)
 # Unlike Twoflower Threeflower is a force overwrite of the remote.
 UNISON_ARGUMENTS+=(-force "${HOME}")
 
