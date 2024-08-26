@@ -157,7 +157,7 @@ fi
 printf "\n${BRIGHT_MAGENTA}Updating dotfiles Node dependencies${NC}\n"
 # TODO: Only do this if dotfiles DID update or if Node.js was updated.
 cd "${SCRIPT_DIR}/../node"
-npm ci
+npm i
 cd "${SCRIPT_DIR}"
 
 if [[ -n "$WSL_DISTRO_NAME" ]]; then

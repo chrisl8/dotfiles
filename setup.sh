@@ -213,7 +213,7 @@ if ! [[ -e "${HOME}/bin" ]]; then
 fi
 
 cd ~/dotfiles/node || exit 1
-npm ci
+npm i
 cd || exit 1
 
 printf "\n${BRIGHT_MAGENTA}GIT Settings${NC}\n"
