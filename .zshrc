@@ -187,3 +187,6 @@ fi
 if [[ -n "$WSL_DISTRO_NAME" && "$(uname -n)" != "KSCDTL01CL5864" ]]; then
     alias ssh="ssh.exe -l $USER"
 fi
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

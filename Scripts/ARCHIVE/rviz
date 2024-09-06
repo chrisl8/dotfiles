@@ -1,4 +1,0 @@
-cd ~/DevTemp/docker/ros-gui
-sudo docker build -t ros:gui .
-sudo ~/DevTemp/x11docker/x11docker --hostnet --user=root --dpi 200 ros:gui /catkin_ws/src/ArloBot/scripts/view-navigation.sh
-

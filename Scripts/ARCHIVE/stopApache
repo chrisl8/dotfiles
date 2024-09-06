@@ -1,3 +1,0 @@
-sudo systemctl stop mariadb --no-block
-sudo systemctl stop apache2 --no-block
-

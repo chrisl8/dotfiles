@@ -1,7 +1,0 @@
-if (tmux has-session -t workstation > /dev/null 2>&1)
-    then
-    tmux -2 attach-session -t workstation
-    else
-    tmux -2 new-session -s workstation
-    fi
-

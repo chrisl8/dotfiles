@@ -1,2 +1,0 @@
-/mnt/c/Dev/crater-manipulator/export-helpers/deployGame.sh --remote-host crater.voidshipephemeral.space --project-path /mnt/c/Dev/crater-manipulator --cloud-drive-path /mnt/c/Users/chris/OneDrive/CraterManipulatorBuilds --game-name crater-manipulator
-"/mnt/c/Program Files/Mozilla Firefox/firefox.exe" "https://crater.voidshipephemeral.space"

@@ -1,1 +1,0 @@
-/mnt/c/Dev/space-game/export-helpers/deployGame.sh --remote-host voidshipephemeral.space --project-path /mnt/c/Dev/space-game --cloud-drive-path /mnt/c/Users/chris/OneDrive/SpaceGameBuilds --build-xr --game-name space-game

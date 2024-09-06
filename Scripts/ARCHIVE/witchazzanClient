@@ -1,6 +1,0 @@
-#!/bin/bash
-cd ~/Dev/witchazzan-client
-git pull
-npm ci
-npm outdated
-npm start

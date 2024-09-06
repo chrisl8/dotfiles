@@ -1,4 +1,4 @@
-export PATH=${HOME}/Scripts:${HOME}/dotfiles/Scripts:${HOME}/dotfiles/bin:${HOME}/bin:${HOME}/Work/Scripts:${PATH}
+export PATH=${HOME}/Scripts:${HOME}/dotfiles/bin:${HOME}/bin:${PATH}
 if (uname -a | grep arm >/dev/null); then
   if (file /bin/ls | grep "32-bit" > /dev/null); then
     export PATH=${HOME}/dotfiles/pi32:${PATH}

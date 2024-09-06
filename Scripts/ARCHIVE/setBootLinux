@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-sudo efibootmgr -o 1,0
-efibootmgr
-
