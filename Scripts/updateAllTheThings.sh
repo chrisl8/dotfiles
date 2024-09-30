@@ -39,6 +39,15 @@ if [[ -d ~/Scripts/.git ]]; then
   cd || exit
 fi
 
+if [[ -d ~/Orac/.git ]]; then
+  printf "\n${BRIGHT_MAGENTA}Updating Orac${NC}\n"
+  cd ~/Orac || exit
+  git pull
+  cd ~/Orac/node || exit
+  npm i
+  cd || exit
+fi
+
 if (command -v zsh >/dev/null); then
   printf "\n${BRIGHT_MAGENTA}Updating Oh My ZSH!${NC}\n"
   if [[ ${ZSH} == "" ]]; then
