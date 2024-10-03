@@ -22,7 +22,7 @@ cd "${SCRIPT_DIR}"
 if [[ -e /etc/debian_version ]]; then
   printf "\n${LIGHT_CYAN}[Install APT packages]${NC}\n"
   sudo apt update
-  sudo apt install -y git vim tmux zsh wget curl
+  sudo apt install -y git vim tmux zsh wget curl unison
 fi
 
 if [[ -e /etc/manjaro-release ]]; then
