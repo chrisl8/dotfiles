@@ -146,9 +146,9 @@ if (command -v nvm); then
   NODE_VERSION=$(node -v)
 
   printf "\n${BRIGHT_MAGENTA}Node.js Updates${NC}\n"
-  nvm install node
-  nvm use node
-  nvm alias default node
+  nvm install --lts
+  nvm use --lts
+  nvm alias default "lts/*"
 
   NODE_VERSION_NEW=$(node -v)
 
