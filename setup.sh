@@ -188,7 +188,7 @@ if ! (command -v brew >/dev/null); then
   printf "\n${BRIGHT_MAGENTA}Node.js via nvm${NC}\n"
   printf "\n${LIGHT_CYAN}[Installing/Updating Node Version Manager]${NC}\n"
   if ! [[ -e ${HOME}/.nvm/nvm.sh ]]; then
-    NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
+    NVM_TAG=$(curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
     wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_TAG/install.sh" | bash
   fi
 
@@ -203,9 +203,9 @@ if ! (command -v brew >/dev/null); then
     # NOTE: This is already set it our standard .zshrc file, so no need to set it there.
   fi
 
-  nvm install node --latest-npm
-  nvm use node
-  nvm alias default node
+  nvm install --lts
+  nvm use --lts
+  nvm alias default "lts/*"
 fi
 
 if ! [[ -e "${HOME}/bin" ]]; then

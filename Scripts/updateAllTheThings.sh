@@ -113,7 +113,7 @@ if (command -v nvm); then
   export NVM_SYMLINK_CURRENT=true
   # shellcheck source=/home/chrisl8/.nvm/nvm.sh
   [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh" # This loads nvm
-  NVM_TAG=$(curl -s curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
+  NVM_TAG=$(curl -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep tag_name | cut -d '"' -f 4)
   NVM_VERSION_LATEST="${NVM_TAG//v/}"
   NVM_VERSION=$(nvm --version)
   if [ "$NVM_VERSION" != "$NVM_VERSION_LATEST" ]; then
