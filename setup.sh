@@ -34,6 +34,7 @@ if (command -v sw_vers >/dev/null); then
   printf "\n${LIGHT_CYAN}[Install Homebrew packages]${NC}\n"
   if ! (command -v brew >/dev/null); then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
   brew install python gh scons node wget
 elif ! (command -v gh >/dev/null) && [[ -e /etc/debian_version ]]; then
